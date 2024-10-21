@@ -32,30 +32,31 @@ class PersonalDetails extends amplify_core.Model {
   final int? _age;
   final String? _alternateNo;
   final String? _agent;
+  final String? _bwnIcNo;
+  final String? _bwnIcExpiry;
+  final String? _bwnIcColour;
   final String? _contactNo;
-  final String? _countryOfBirth;
+  final String? _cob;
   final String? _contractType;
   final String? _chinese;
-  final String? _dateOfBirth;
-  final String? _drivingLicense;
+  final String? _dob;
+  final String? _driveLic;
   final String? _email;
-  final String? _employeeType;
-  final List<String>? _educationDetails;
+  final String? _empType;
+  final List<String>? _eduDetails;
   final List<String>? _familyDetails;
   final String? _gender;
-  final String? _bruneiIcNo;
-  final String? _bruneiIcExpiry;
-  final String? _bruneiIcColour;
+  final String? _lang;
   final String? _marital;
   final String? _name;
   final String? _nationality;
-  final String? _otherNationality;
+  final String? _otherNation;
   final String? _otherRace;
   final String? _otherReligion;
-  final String? _passportNo;
-  final String? _passportIssued;
-  final String? _passportExpiry;
-  final String? _passportDestination;
+  final String? _ppNo;
+  final String? _ppIssued;
+  final String? _ppExpiry;
+  final String? _ppDestinate;
   final String? _presentAddress;
   final String? _permanentAddress;
   final String? _profilePhoto;
@@ -113,6 +114,18 @@ class PersonalDetails extends amplify_core.Model {
     return _agent;
   }
   
+  String? get bwnIcNo {
+    return _bwnIcNo;
+  }
+  
+  String? get bwnIcExpiry {
+    return _bwnIcExpiry;
+  }
+  
+  String? get bwnIcColour {
+    return _bwnIcColour;
+  }
+  
   String get contactNo {
     try {
       return _contactNo!;
@@ -126,9 +139,9 @@ class PersonalDetails extends amplify_core.Model {
     }
   }
   
-  String get countryOfBirth {
+  String get cob {
     try {
-      return _countryOfBirth!;
+      return _cob!;
     } catch(e) {
       throw amplify_core.AmplifyCodeGenModelException(
           amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -156,9 +169,9 @@ class PersonalDetails extends amplify_core.Model {
     return _chinese;
   }
   
-  String get dateOfBirth {
+  String get dob {
     try {
-      return _dateOfBirth!;
+      return _dob!;
     } catch(e) {
       throw amplify_core.AmplifyCodeGenModelException(
           amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -169,8 +182,8 @@ class PersonalDetails extends amplify_core.Model {
     }
   }
   
-  String? get drivingLicense {
-    return _drivingLicense;
+  String? get driveLic {
+    return _driveLic;
   }
   
   String get email {
@@ -186,9 +199,9 @@ class PersonalDetails extends amplify_core.Model {
     }
   }
   
-  String get employeeType {
+  String get empType {
     try {
-      return _employeeType!;
+      return _empType!;
     } catch(e) {
       throw amplify_core.AmplifyCodeGenModelException(
           amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -199,8 +212,8 @@ class PersonalDetails extends amplify_core.Model {
     }
   }
   
-  List<String>? get educationDetails {
-    return _educationDetails;
+  List<String>? get eduDetails {
+    return _eduDetails;
   }
   
   List<String>? get familyDetails {
@@ -220,16 +233,17 @@ class PersonalDetails extends amplify_core.Model {
     }
   }
   
-  String? get bruneiIcNo {
-    return _bruneiIcNo;
-  }
-  
-  String? get bruneiIcExpiry {
-    return _bruneiIcExpiry;
-  }
-  
-  String? get bruneiIcColour {
-    return _bruneiIcColour;
+  String get lang {
+    try {
+      return _lang!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
   String get marital {
@@ -271,8 +285,8 @@ class PersonalDetails extends amplify_core.Model {
     }
   }
   
-  String? get otherNationality {
-    return _otherNationality;
+  String? get otherNation {
+    return _otherNation;
   }
   
   String? get otherRace {
@@ -283,20 +297,20 @@ class PersonalDetails extends amplify_core.Model {
     return _otherReligion;
   }
   
-  String? get passportNo {
-    return _passportNo;
+  String? get ppNo {
+    return _ppNo;
   }
   
-  String? get passportIssued {
-    return _passportIssued;
+  String? get ppIssued {
+    return _ppIssued;
   }
   
-  String? get passportExpiry {
-    return _passportExpiry;
+  String? get ppExpiry {
+    return _ppExpiry;
   }
   
-  String? get passportDestination {
-    return _passportDestination;
+  String? get ppDestinate {
+    return _ppDestinate;
   }
   
   String get presentAddress {
@@ -389,39 +403,40 @@ class PersonalDetails extends amplify_core.Model {
     return _updatedAt;
   }
   
-  const PersonalDetails._internal({required this.id, required empID, required age, alternateNo, agent, required contactNo, required countryOfBirth, required contractType, chinese, required dateOfBirth, drivingLicense, required email, required employeeType, educationDetails, familyDetails, required gender, bruneiIcNo, bruneiIcExpiry, bruneiIcColour, required marital, required name, required nationality, otherNationality, otherRace, otherReligion, passportNo, passportIssued, passportExpiry, passportDestination, required presentAddress, required permanentAddress, required profilePhoto, required position, required race, required religion, workExperience, createdAt, updatedAt}): _empID = empID, _age = age, _alternateNo = alternateNo, _agent = agent, _contactNo = contactNo, _countryOfBirth = countryOfBirth, _contractType = contractType, _chinese = chinese, _dateOfBirth = dateOfBirth, _drivingLicense = drivingLicense, _email = email, _employeeType = employeeType, _educationDetails = educationDetails, _familyDetails = familyDetails, _gender = gender, _bruneiIcNo = bruneiIcNo, _bruneiIcExpiry = bruneiIcExpiry, _bruneiIcColour = bruneiIcColour, _marital = marital, _name = name, _nationality = nationality, _otherNationality = otherNationality, _otherRace = otherRace, _otherReligion = otherReligion, _passportNo = passportNo, _passportIssued = passportIssued, _passportExpiry = passportExpiry, _passportDestination = passportDestination, _presentAddress = presentAddress, _permanentAddress = permanentAddress, _profilePhoto = profilePhoto, _position = position, _race = race, _religion = religion, _workExperience = workExperience, _createdAt = createdAt, _updatedAt = updatedAt;
+  const PersonalDetails._internal({required this.id, required empID, required age, alternateNo, agent, bwnIcNo, bwnIcExpiry, bwnIcColour, required contactNo, required cob, required contractType, chinese, required dob, driveLic, required email, required empType, eduDetails, familyDetails, required gender, required lang, required marital, required name, required nationality, otherNation, otherRace, otherReligion, ppNo, ppIssued, ppExpiry, ppDestinate, required presentAddress, required permanentAddress, required profilePhoto, required position, required race, required religion, workExperience, createdAt, updatedAt}): _empID = empID, _age = age, _alternateNo = alternateNo, _agent = agent, _bwnIcNo = bwnIcNo, _bwnIcExpiry = bwnIcExpiry, _bwnIcColour = bwnIcColour, _contactNo = contactNo, _cob = cob, _contractType = contractType, _chinese = chinese, _dob = dob, _driveLic = driveLic, _email = email, _empType = empType, _eduDetails = eduDetails, _familyDetails = familyDetails, _gender = gender, _lang = lang, _marital = marital, _name = name, _nationality = nationality, _otherNation = otherNation, _otherRace = otherRace, _otherReligion = otherReligion, _ppNo = ppNo, _ppIssued = ppIssued, _ppExpiry = ppExpiry, _ppDestinate = ppDestinate, _presentAddress = presentAddress, _permanentAddress = permanentAddress, _profilePhoto = profilePhoto, _position = position, _race = race, _religion = religion, _workExperience = workExperience, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory PersonalDetails({String? id, required String empID, required int age, String? alternateNo, String? agent, required String contactNo, required String countryOfBirth, required String contractType, String? chinese, required String dateOfBirth, String? drivingLicense, required String email, required String employeeType, List<String>? educationDetails, List<String>? familyDetails, required String gender, String? bruneiIcNo, String? bruneiIcExpiry, String? bruneiIcColour, required String marital, required String name, required String nationality, String? otherNationality, String? otherRace, String? otherReligion, String? passportNo, String? passportIssued, String? passportExpiry, String? passportDestination, required String presentAddress, required String permanentAddress, required String profilePhoto, required String position, required String race, required String religion, List<String>? workExperience}) {
+  factory PersonalDetails({String? id, required String empID, required int age, String? alternateNo, String? agent, String? bwnIcNo, String? bwnIcExpiry, String? bwnIcColour, required String contactNo, required String cob, required String contractType, String? chinese, required String dob, String? driveLic, required String email, required String empType, List<String>? eduDetails, List<String>? familyDetails, required String gender, required String lang, required String marital, required String name, required String nationality, String? otherNation, String? otherRace, String? otherReligion, String? ppNo, String? ppIssued, String? ppExpiry, String? ppDestinate, required String presentAddress, required String permanentAddress, required String profilePhoto, required String position, required String race, required String religion, List<String>? workExperience}) {
     return PersonalDetails._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
       empID: empID,
       age: age,
       alternateNo: alternateNo,
       agent: agent,
+      bwnIcNo: bwnIcNo,
+      bwnIcExpiry: bwnIcExpiry,
+      bwnIcColour: bwnIcColour,
       contactNo: contactNo,
-      countryOfBirth: countryOfBirth,
+      cob: cob,
       contractType: contractType,
       chinese: chinese,
-      dateOfBirth: dateOfBirth,
-      drivingLicense: drivingLicense,
+      dob: dob,
+      driveLic: driveLic,
       email: email,
-      employeeType: employeeType,
-      educationDetails: educationDetails != null ? List<String>.unmodifiable(educationDetails) : educationDetails,
+      empType: empType,
+      eduDetails: eduDetails != null ? List<String>.unmodifiable(eduDetails) : eduDetails,
       familyDetails: familyDetails != null ? List<String>.unmodifiable(familyDetails) : familyDetails,
       gender: gender,
-      bruneiIcNo: bruneiIcNo,
-      bruneiIcExpiry: bruneiIcExpiry,
-      bruneiIcColour: bruneiIcColour,
+      lang: lang,
       marital: marital,
       name: name,
       nationality: nationality,
-      otherNationality: otherNationality,
+      otherNation: otherNation,
       otherRace: otherRace,
       otherReligion: otherReligion,
-      passportNo: passportNo,
-      passportIssued: passportIssued,
-      passportExpiry: passportExpiry,
-      passportDestination: passportDestination,
+      ppNo: ppNo,
+      ppIssued: ppIssued,
+      ppExpiry: ppExpiry,
+      ppDestinate: ppDestinate,
       presentAddress: presentAddress,
       permanentAddress: permanentAddress,
       profilePhoto: profilePhoto,
@@ -444,30 +459,31 @@ class PersonalDetails extends amplify_core.Model {
       _age == other._age &&
       _alternateNo == other._alternateNo &&
       _agent == other._agent &&
+      _bwnIcNo == other._bwnIcNo &&
+      _bwnIcExpiry == other._bwnIcExpiry &&
+      _bwnIcColour == other._bwnIcColour &&
       _contactNo == other._contactNo &&
-      _countryOfBirth == other._countryOfBirth &&
+      _cob == other._cob &&
       _contractType == other._contractType &&
       _chinese == other._chinese &&
-      _dateOfBirth == other._dateOfBirth &&
-      _drivingLicense == other._drivingLicense &&
+      _dob == other._dob &&
+      _driveLic == other._driveLic &&
       _email == other._email &&
-      _employeeType == other._employeeType &&
-      DeepCollectionEquality().equals(_educationDetails, other._educationDetails) &&
+      _empType == other._empType &&
+      DeepCollectionEquality().equals(_eduDetails, other._eduDetails) &&
       DeepCollectionEquality().equals(_familyDetails, other._familyDetails) &&
       _gender == other._gender &&
-      _bruneiIcNo == other._bruneiIcNo &&
-      _bruneiIcExpiry == other._bruneiIcExpiry &&
-      _bruneiIcColour == other._bruneiIcColour &&
+      _lang == other._lang &&
       _marital == other._marital &&
       _name == other._name &&
       _nationality == other._nationality &&
-      _otherNationality == other._otherNationality &&
+      _otherNation == other._otherNation &&
       _otherRace == other._otherRace &&
       _otherReligion == other._otherReligion &&
-      _passportNo == other._passportNo &&
-      _passportIssued == other._passportIssued &&
-      _passportExpiry == other._passportExpiry &&
-      _passportDestination == other._passportDestination &&
+      _ppNo == other._ppNo &&
+      _ppIssued == other._ppIssued &&
+      _ppExpiry == other._ppExpiry &&
+      _ppDestinate == other._ppDestinate &&
       _presentAddress == other._presentAddress &&
       _permanentAddress == other._permanentAddress &&
       _profilePhoto == other._profilePhoto &&
@@ -490,30 +506,31 @@ class PersonalDetails extends amplify_core.Model {
     buffer.write("age=" + (_age != null ? _age!.toString() : "null") + ", ");
     buffer.write("alternateNo=" + "$_alternateNo" + ", ");
     buffer.write("agent=" + "$_agent" + ", ");
+    buffer.write("bwnIcNo=" + "$_bwnIcNo" + ", ");
+    buffer.write("bwnIcExpiry=" + "$_bwnIcExpiry" + ", ");
+    buffer.write("bwnIcColour=" + "$_bwnIcColour" + ", ");
     buffer.write("contactNo=" + "$_contactNo" + ", ");
-    buffer.write("countryOfBirth=" + "$_countryOfBirth" + ", ");
+    buffer.write("cob=" + "$_cob" + ", ");
     buffer.write("contractType=" + "$_contractType" + ", ");
     buffer.write("chinese=" + "$_chinese" + ", ");
-    buffer.write("dateOfBirth=" + "$_dateOfBirth" + ", ");
-    buffer.write("drivingLicense=" + "$_drivingLicense" + ", ");
+    buffer.write("dob=" + "$_dob" + ", ");
+    buffer.write("driveLic=" + "$_driveLic" + ", ");
     buffer.write("email=" + "$_email" + ", ");
-    buffer.write("employeeType=" + "$_employeeType" + ", ");
-    buffer.write("educationDetails=" + (_educationDetails != null ? _educationDetails!.toString() : "null") + ", ");
+    buffer.write("empType=" + "$_empType" + ", ");
+    buffer.write("eduDetails=" + (_eduDetails != null ? _eduDetails!.toString() : "null") + ", ");
     buffer.write("familyDetails=" + (_familyDetails != null ? _familyDetails!.toString() : "null") + ", ");
     buffer.write("gender=" + "$_gender" + ", ");
-    buffer.write("bruneiIcNo=" + "$_bruneiIcNo" + ", ");
-    buffer.write("bruneiIcExpiry=" + "$_bruneiIcExpiry" + ", ");
-    buffer.write("bruneiIcColour=" + "$_bruneiIcColour" + ", ");
+    buffer.write("lang=" + "$_lang" + ", ");
     buffer.write("marital=" + "$_marital" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("nationality=" + "$_nationality" + ", ");
-    buffer.write("otherNationality=" + "$_otherNationality" + ", ");
+    buffer.write("otherNation=" + "$_otherNation" + ", ");
     buffer.write("otherRace=" + "$_otherRace" + ", ");
     buffer.write("otherReligion=" + "$_otherReligion" + ", ");
-    buffer.write("passportNo=" + "$_passportNo" + ", ");
-    buffer.write("passportIssued=" + "$_passportIssued" + ", ");
-    buffer.write("passportExpiry=" + "$_passportExpiry" + ", ");
-    buffer.write("passportDestination=" + "$_passportDestination" + ", ");
+    buffer.write("ppNo=" + "$_ppNo" + ", ");
+    buffer.write("ppIssued=" + "$_ppIssued" + ", ");
+    buffer.write("ppExpiry=" + "$_ppExpiry" + ", ");
+    buffer.write("ppDestinate=" + "$_ppDestinate" + ", ");
     buffer.write("presentAddress=" + "$_presentAddress" + ", ");
     buffer.write("permanentAddress=" + "$_permanentAddress" + ", ");
     buffer.write("profilePhoto=" + "$_profilePhoto" + ", ");
@@ -528,37 +545,38 @@ class PersonalDetails extends amplify_core.Model {
     return buffer.toString();
   }
   
-  PersonalDetails copyWith({String? empID, int? age, String? alternateNo, String? agent, String? contactNo, String? countryOfBirth, String? contractType, String? chinese, String? dateOfBirth, String? drivingLicense, String? email, String? employeeType, List<String>? educationDetails, List<String>? familyDetails, String? gender, String? bruneiIcNo, String? bruneiIcExpiry, String? bruneiIcColour, String? marital, String? name, String? nationality, String? otherNationality, String? otherRace, String? otherReligion, String? passportNo, String? passportIssued, String? passportExpiry, String? passportDestination, String? presentAddress, String? permanentAddress, String? profilePhoto, String? position, String? race, String? religion, List<String>? workExperience}) {
+  PersonalDetails copyWith({String? empID, int? age, String? alternateNo, String? agent, String? bwnIcNo, String? bwnIcExpiry, String? bwnIcColour, String? contactNo, String? cob, String? contractType, String? chinese, String? dob, String? driveLic, String? email, String? empType, List<String>? eduDetails, List<String>? familyDetails, String? gender, String? lang, String? marital, String? name, String? nationality, String? otherNation, String? otherRace, String? otherReligion, String? ppNo, String? ppIssued, String? ppExpiry, String? ppDestinate, String? presentAddress, String? permanentAddress, String? profilePhoto, String? position, String? race, String? religion, List<String>? workExperience}) {
     return PersonalDetails._internal(
       id: id,
       empID: empID ?? this.empID,
       age: age ?? this.age,
       alternateNo: alternateNo ?? this.alternateNo,
       agent: agent ?? this.agent,
+      bwnIcNo: bwnIcNo ?? this.bwnIcNo,
+      bwnIcExpiry: bwnIcExpiry ?? this.bwnIcExpiry,
+      bwnIcColour: bwnIcColour ?? this.bwnIcColour,
       contactNo: contactNo ?? this.contactNo,
-      countryOfBirth: countryOfBirth ?? this.countryOfBirth,
+      cob: cob ?? this.cob,
       contractType: contractType ?? this.contractType,
       chinese: chinese ?? this.chinese,
-      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
-      drivingLicense: drivingLicense ?? this.drivingLicense,
+      dob: dob ?? this.dob,
+      driveLic: driveLic ?? this.driveLic,
       email: email ?? this.email,
-      employeeType: employeeType ?? this.employeeType,
-      educationDetails: educationDetails ?? this.educationDetails,
+      empType: empType ?? this.empType,
+      eduDetails: eduDetails ?? this.eduDetails,
       familyDetails: familyDetails ?? this.familyDetails,
       gender: gender ?? this.gender,
-      bruneiIcNo: bruneiIcNo ?? this.bruneiIcNo,
-      bruneiIcExpiry: bruneiIcExpiry ?? this.bruneiIcExpiry,
-      bruneiIcColour: bruneiIcColour ?? this.bruneiIcColour,
+      lang: lang ?? this.lang,
       marital: marital ?? this.marital,
       name: name ?? this.name,
       nationality: nationality ?? this.nationality,
-      otherNationality: otherNationality ?? this.otherNationality,
+      otherNation: otherNation ?? this.otherNation,
       otherRace: otherRace ?? this.otherRace,
       otherReligion: otherReligion ?? this.otherReligion,
-      passportNo: passportNo ?? this.passportNo,
-      passportIssued: passportIssued ?? this.passportIssued,
-      passportExpiry: passportExpiry ?? this.passportExpiry,
-      passportDestination: passportDestination ?? this.passportDestination,
+      ppNo: ppNo ?? this.ppNo,
+      ppIssued: ppIssued ?? this.ppIssued,
+      ppExpiry: ppExpiry ?? this.ppExpiry,
+      ppDestinate: ppDestinate ?? this.ppDestinate,
       presentAddress: presentAddress ?? this.presentAddress,
       permanentAddress: permanentAddress ?? this.permanentAddress,
       profilePhoto: profilePhoto ?? this.profilePhoto,
@@ -573,30 +591,31 @@ class PersonalDetails extends amplify_core.Model {
     ModelFieldValue<int>? age,
     ModelFieldValue<String?>? alternateNo,
     ModelFieldValue<String?>? agent,
+    ModelFieldValue<String?>? bwnIcNo,
+    ModelFieldValue<String?>? bwnIcExpiry,
+    ModelFieldValue<String?>? bwnIcColour,
     ModelFieldValue<String>? contactNo,
-    ModelFieldValue<String>? countryOfBirth,
+    ModelFieldValue<String>? cob,
     ModelFieldValue<String>? contractType,
     ModelFieldValue<String?>? chinese,
-    ModelFieldValue<String>? dateOfBirth,
-    ModelFieldValue<String?>? drivingLicense,
+    ModelFieldValue<String>? dob,
+    ModelFieldValue<String?>? driveLic,
     ModelFieldValue<String>? email,
-    ModelFieldValue<String>? employeeType,
-    ModelFieldValue<List<String>>? educationDetails,
+    ModelFieldValue<String>? empType,
+    ModelFieldValue<List<String>>? eduDetails,
     ModelFieldValue<List<String>?>? familyDetails,
     ModelFieldValue<String>? gender,
-    ModelFieldValue<String?>? bruneiIcNo,
-    ModelFieldValue<String?>? bruneiIcExpiry,
-    ModelFieldValue<String?>? bruneiIcColour,
+    ModelFieldValue<String>? lang,
     ModelFieldValue<String>? marital,
     ModelFieldValue<String>? name,
     ModelFieldValue<String>? nationality,
-    ModelFieldValue<String?>? otherNationality,
+    ModelFieldValue<String?>? otherNation,
     ModelFieldValue<String?>? otherRace,
     ModelFieldValue<String?>? otherReligion,
-    ModelFieldValue<String?>? passportNo,
-    ModelFieldValue<String?>? passportIssued,
-    ModelFieldValue<String?>? passportExpiry,
-    ModelFieldValue<String?>? passportDestination,
+    ModelFieldValue<String?>? ppNo,
+    ModelFieldValue<String?>? ppIssued,
+    ModelFieldValue<String?>? ppExpiry,
+    ModelFieldValue<String?>? ppDestinate,
     ModelFieldValue<String>? presentAddress,
     ModelFieldValue<String>? permanentAddress,
     ModelFieldValue<String>? profilePhoto,
@@ -611,30 +630,31 @@ class PersonalDetails extends amplify_core.Model {
       age: age == null ? this.age : age.value,
       alternateNo: alternateNo == null ? this.alternateNo : alternateNo.value,
       agent: agent == null ? this.agent : agent.value,
+      bwnIcNo: bwnIcNo == null ? this.bwnIcNo : bwnIcNo.value,
+      bwnIcExpiry: bwnIcExpiry == null ? this.bwnIcExpiry : bwnIcExpiry.value,
+      bwnIcColour: bwnIcColour == null ? this.bwnIcColour : bwnIcColour.value,
       contactNo: contactNo == null ? this.contactNo : contactNo.value,
-      countryOfBirth: countryOfBirth == null ? this.countryOfBirth : countryOfBirth.value,
+      cob: cob == null ? this.cob : cob.value,
       contractType: contractType == null ? this.contractType : contractType.value,
       chinese: chinese == null ? this.chinese : chinese.value,
-      dateOfBirth: dateOfBirth == null ? this.dateOfBirth : dateOfBirth.value,
-      drivingLicense: drivingLicense == null ? this.drivingLicense : drivingLicense.value,
+      dob: dob == null ? this.dob : dob.value,
+      driveLic: driveLic == null ? this.driveLic : driveLic.value,
       email: email == null ? this.email : email.value,
-      employeeType: employeeType == null ? this.employeeType : employeeType.value,
-      educationDetails: educationDetails == null ? this.educationDetails : educationDetails.value,
+      empType: empType == null ? this.empType : empType.value,
+      eduDetails: eduDetails == null ? this.eduDetails : eduDetails.value,
       familyDetails: familyDetails == null ? this.familyDetails : familyDetails.value,
       gender: gender == null ? this.gender : gender.value,
-      bruneiIcNo: bruneiIcNo == null ? this.bruneiIcNo : bruneiIcNo.value,
-      bruneiIcExpiry: bruneiIcExpiry == null ? this.bruneiIcExpiry : bruneiIcExpiry.value,
-      bruneiIcColour: bruneiIcColour == null ? this.bruneiIcColour : bruneiIcColour.value,
+      lang: lang == null ? this.lang : lang.value,
       marital: marital == null ? this.marital : marital.value,
       name: name == null ? this.name : name.value,
       nationality: nationality == null ? this.nationality : nationality.value,
-      otherNationality: otherNationality == null ? this.otherNationality : otherNationality.value,
+      otherNation: otherNation == null ? this.otherNation : otherNation.value,
       otherRace: otherRace == null ? this.otherRace : otherRace.value,
       otherReligion: otherReligion == null ? this.otherReligion : otherReligion.value,
-      passportNo: passportNo == null ? this.passportNo : passportNo.value,
-      passportIssued: passportIssued == null ? this.passportIssued : passportIssued.value,
-      passportExpiry: passportExpiry == null ? this.passportExpiry : passportExpiry.value,
-      passportDestination: passportDestination == null ? this.passportDestination : passportDestination.value,
+      ppNo: ppNo == null ? this.ppNo : ppNo.value,
+      ppIssued: ppIssued == null ? this.ppIssued : ppIssued.value,
+      ppExpiry: ppExpiry == null ? this.ppExpiry : ppExpiry.value,
+      ppDestinate: ppDestinate == null ? this.ppDestinate : ppDestinate.value,
       presentAddress: presentAddress == null ? this.presentAddress : presentAddress.value,
       permanentAddress: permanentAddress == null ? this.permanentAddress : permanentAddress.value,
       profilePhoto: profilePhoto == null ? this.profilePhoto : profilePhoto.value,
@@ -651,30 +671,31 @@ class PersonalDetails extends amplify_core.Model {
       _age = (json['age'] as num?)?.toInt(),
       _alternateNo = json['alternateNo'],
       _agent = json['agent'],
+      _bwnIcNo = json['bwnIcNo'],
+      _bwnIcExpiry = json['bwnIcExpiry'],
+      _bwnIcColour = json['bwnIcColour'],
       _contactNo = json['contactNo'],
-      _countryOfBirth = json['countryOfBirth'],
+      _cob = json['cob'],
       _contractType = json['contractType'],
       _chinese = json['chinese'],
-      _dateOfBirth = json['dateOfBirth'],
-      _drivingLicense = json['drivingLicense'],
+      _dob = json['dob'],
+      _driveLic = json['driveLic'],
       _email = json['email'],
-      _employeeType = json['employeeType'],
-      _educationDetails = json['educationDetails']?.cast<String>(),
+      _empType = json['empType'],
+      _eduDetails = json['eduDetails']?.cast<String>(),
       _familyDetails = json['familyDetails']?.cast<String>(),
       _gender = json['gender'],
-      _bruneiIcNo = json['bruneiIcNo'],
-      _bruneiIcExpiry = json['bruneiIcExpiry'],
-      _bruneiIcColour = json['bruneiIcColour'],
+      _lang = json['lang'],
       _marital = json['marital'],
       _name = json['name'],
       _nationality = json['nationality'],
-      _otherNationality = json['otherNationality'],
+      _otherNation = json['otherNation'],
       _otherRace = json['otherRace'],
       _otherReligion = json['otherReligion'],
-      _passportNo = json['passportNo'],
-      _passportIssued = json['passportIssued'],
-      _passportExpiry = json['passportExpiry'],
-      _passportDestination = json['passportDestination'],
+      _ppNo = json['ppNo'],
+      _ppIssued = json['ppIssued'],
+      _ppExpiry = json['ppExpiry'],
+      _ppDestinate = json['ppDestinate'],
       _presentAddress = json['presentAddress'],
       _permanentAddress = json['permanentAddress'],
       _profilePhoto = json['profilePhoto'],
@@ -686,7 +707,7 @@ class PersonalDetails extends amplify_core.Model {
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'empID': _empID, 'age': _age, 'alternateNo': _alternateNo, 'agent': _agent, 'contactNo': _contactNo, 'countryOfBirth': _countryOfBirth, 'contractType': _contractType, 'chinese': _chinese, 'dateOfBirth': _dateOfBirth, 'drivingLicense': _drivingLicense, 'email': _email, 'employeeType': _employeeType, 'educationDetails': _educationDetails, 'familyDetails': _familyDetails, 'gender': _gender, 'bruneiIcNo': _bruneiIcNo, 'bruneiIcExpiry': _bruneiIcExpiry, 'bruneiIcColour': _bruneiIcColour, 'marital': _marital, 'name': _name, 'nationality': _nationality, 'otherNationality': _otherNationality, 'otherRace': _otherRace, 'otherReligion': _otherReligion, 'passportNo': _passportNo, 'passportIssued': _passportIssued, 'passportExpiry': _passportExpiry, 'passportDestination': _passportDestination, 'presentAddress': _presentAddress, 'permanentAddress': _permanentAddress, 'profilePhoto': _profilePhoto, 'position': _position, 'race': _race, 'religion': _religion, 'workExperience': _workExperience, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'empID': _empID, 'age': _age, 'alternateNo': _alternateNo, 'agent': _agent, 'bwnIcNo': _bwnIcNo, 'bwnIcExpiry': _bwnIcExpiry, 'bwnIcColour': _bwnIcColour, 'contactNo': _contactNo, 'cob': _cob, 'contractType': _contractType, 'chinese': _chinese, 'dob': _dob, 'driveLic': _driveLic, 'email': _email, 'empType': _empType, 'eduDetails': _eduDetails, 'familyDetails': _familyDetails, 'gender': _gender, 'lang': _lang, 'marital': _marital, 'name': _name, 'nationality': _nationality, 'otherNation': _otherNation, 'otherRace': _otherRace, 'otherReligion': _otherReligion, 'ppNo': _ppNo, 'ppIssued': _ppIssued, 'ppExpiry': _ppExpiry, 'ppDestinate': _ppDestinate, 'presentAddress': _presentAddress, 'permanentAddress': _permanentAddress, 'profilePhoto': _profilePhoto, 'position': _position, 'race': _race, 'religion': _religion, 'workExperience': _workExperience, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
@@ -695,30 +716,31 @@ class PersonalDetails extends amplify_core.Model {
     'age': _age,
     'alternateNo': _alternateNo,
     'agent': _agent,
+    'bwnIcNo': _bwnIcNo,
+    'bwnIcExpiry': _bwnIcExpiry,
+    'bwnIcColour': _bwnIcColour,
     'contactNo': _contactNo,
-    'countryOfBirth': _countryOfBirth,
+    'cob': _cob,
     'contractType': _contractType,
     'chinese': _chinese,
-    'dateOfBirth': _dateOfBirth,
-    'drivingLicense': _drivingLicense,
+    'dob': _dob,
+    'driveLic': _driveLic,
     'email': _email,
-    'employeeType': _employeeType,
-    'educationDetails': _educationDetails,
+    'empType': _empType,
+    'eduDetails': _eduDetails,
     'familyDetails': _familyDetails,
     'gender': _gender,
-    'bruneiIcNo': _bruneiIcNo,
-    'bruneiIcExpiry': _bruneiIcExpiry,
-    'bruneiIcColour': _bruneiIcColour,
+    'lang': _lang,
     'marital': _marital,
     'name': _name,
     'nationality': _nationality,
-    'otherNationality': _otherNationality,
+    'otherNation': _otherNation,
     'otherRace': _otherRace,
     'otherReligion': _otherReligion,
-    'passportNo': _passportNo,
-    'passportIssued': _passportIssued,
-    'passportExpiry': _passportExpiry,
-    'passportDestination': _passportDestination,
+    'ppNo': _ppNo,
+    'ppIssued': _ppIssued,
+    'ppExpiry': _ppExpiry,
+    'ppDestinate': _ppDestinate,
     'presentAddress': _presentAddress,
     'permanentAddress': _permanentAddress,
     'profilePhoto': _profilePhoto,
@@ -736,30 +758,31 @@ class PersonalDetails extends amplify_core.Model {
   static final AGE = amplify_core.QueryField(fieldName: "age");
   static final ALTERNATENO = amplify_core.QueryField(fieldName: "alternateNo");
   static final AGENT = amplify_core.QueryField(fieldName: "agent");
+  static final BWNICNO = amplify_core.QueryField(fieldName: "bwnIcNo");
+  static final BWNICEXPIRY = amplify_core.QueryField(fieldName: "bwnIcExpiry");
+  static final BWNICCOLOUR = amplify_core.QueryField(fieldName: "bwnIcColour");
   static final CONTACTNO = amplify_core.QueryField(fieldName: "contactNo");
-  static final COUNTRYOFBIRTH = amplify_core.QueryField(fieldName: "countryOfBirth");
+  static final COB = amplify_core.QueryField(fieldName: "cob");
   static final CONTRACTTYPE = amplify_core.QueryField(fieldName: "contractType");
   static final CHINESE = amplify_core.QueryField(fieldName: "chinese");
-  static final DATEOFBIRTH = amplify_core.QueryField(fieldName: "dateOfBirth");
-  static final DRIVINGLICENSE = amplify_core.QueryField(fieldName: "drivingLicense");
+  static final DOB = amplify_core.QueryField(fieldName: "dob");
+  static final DRIVELIC = amplify_core.QueryField(fieldName: "driveLic");
   static final EMAIL = amplify_core.QueryField(fieldName: "email");
-  static final EMPLOYEETYPE = amplify_core.QueryField(fieldName: "employeeType");
-  static final EDUCATIONDETAILS = amplify_core.QueryField(fieldName: "educationDetails");
+  static final EMPTYPE = amplify_core.QueryField(fieldName: "empType");
+  static final EDUDETAILS = amplify_core.QueryField(fieldName: "eduDetails");
   static final FAMILYDETAILS = amplify_core.QueryField(fieldName: "familyDetails");
   static final GENDER = amplify_core.QueryField(fieldName: "gender");
-  static final BRUNEIICNO = amplify_core.QueryField(fieldName: "bruneiIcNo");
-  static final BRUNEIICEXPIRY = amplify_core.QueryField(fieldName: "bruneiIcExpiry");
-  static final BRUNEIICCOLOUR = amplify_core.QueryField(fieldName: "bruneiIcColour");
+  static final LANG = amplify_core.QueryField(fieldName: "lang");
   static final MARITAL = amplify_core.QueryField(fieldName: "marital");
   static final NAME = amplify_core.QueryField(fieldName: "name");
   static final NATIONALITY = amplify_core.QueryField(fieldName: "nationality");
-  static final OTHERNATIONALITY = amplify_core.QueryField(fieldName: "otherNationality");
+  static final OTHERNATION = amplify_core.QueryField(fieldName: "otherNation");
   static final OTHERRACE = amplify_core.QueryField(fieldName: "otherRace");
   static final OTHERRELIGION = amplify_core.QueryField(fieldName: "otherReligion");
-  static final PASSPORTNO = amplify_core.QueryField(fieldName: "passportNo");
-  static final PASSPORTISSUED = amplify_core.QueryField(fieldName: "passportIssued");
-  static final PASSPORTEXPIRY = amplify_core.QueryField(fieldName: "passportExpiry");
-  static final PASSPORTDESTINATION = amplify_core.QueryField(fieldName: "passportDestination");
+  static final PPNO = amplify_core.QueryField(fieldName: "ppNo");
+  static final PPISSUED = amplify_core.QueryField(fieldName: "ppIssued");
+  static final PPEXPIRY = amplify_core.QueryField(fieldName: "ppExpiry");
+  static final PPDESTINATE = amplify_core.QueryField(fieldName: "ppDestinate");
   static final PRESENTADDRESS = amplify_core.QueryField(fieldName: "presentAddress");
   static final PERMANENTADDRESS = amplify_core.QueryField(fieldName: "permanentAddress");
   static final PROFILEPHOTO = amplify_core.QueryField(fieldName: "profilePhoto");
@@ -809,13 +832,31 @@ class PersonalDetails extends amplify_core.Model {
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: PersonalDetails.BWNICNO,
+      isRequired: false,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: PersonalDetails.BWNICEXPIRY,
+      isRequired: false,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: PersonalDetails.BWNICCOLOUR,
+      isRequired: false,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: PersonalDetails.CONTACTNO,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.COUNTRYOFBIRTH,
+      key: PersonalDetails.COB,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
@@ -833,13 +874,13 @@ class PersonalDetails extends amplify_core.Model {
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.DATEOFBIRTH,
+      key: PersonalDetails.DOB,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.DRIVINGLICENSE,
+      key: PersonalDetails.DRIVELIC,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
@@ -851,13 +892,13 @@ class PersonalDetails extends amplify_core.Model {
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.EMPLOYEETYPE,
+      key: PersonalDetails.EMPTYPE,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.EDUCATIONDETAILS,
+      key: PersonalDetails.EDUDETAILS,
       isRequired: false,
       isArray: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.collection, ofModelName: amplify_core.ModelFieldTypeEnum.string.name)
@@ -877,20 +918,8 @@ class PersonalDetails extends amplify_core.Model {
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.BRUNEIICNO,
-      isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.BRUNEIICEXPIRY,
-      isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.BRUNEIICCOLOUR,
-      isRequired: false,
+      key: PersonalDetails.LANG,
+      isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
@@ -913,7 +942,7 @@ class PersonalDetails extends amplify_core.Model {
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.OTHERNATIONALITY,
+      key: PersonalDetails.OTHERNATION,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
@@ -931,25 +960,25 @@ class PersonalDetails extends amplify_core.Model {
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.PASSPORTNO,
+      key: PersonalDetails.PPNO,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.PASSPORTISSUED,
+      key: PersonalDetails.PPISSUED,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.PASSPORTEXPIRY,
+      key: PersonalDetails.PPEXPIRY,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: PersonalDetails.PASSPORTDESTINATION,
+      key: PersonalDetails.PPDESTINATE,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));

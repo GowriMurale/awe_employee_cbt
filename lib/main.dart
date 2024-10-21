@@ -73,7 +73,7 @@ class _MyAppState extends State<MyApp> {
 //   REJECTED
 //   CANCELED
 // }
-//
+
 // type LeaveApplication @model {
 // empID: empID!
 // leaveType: String!

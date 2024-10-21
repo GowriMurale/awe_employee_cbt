@@ -46,12 +46,10 @@ class _LoginScreenState extends State<LoginScreen> {
       if (session.isSignedIn) {
         String userId = await Amplify.Auth.getCurrentUser().then((user) => user.userId);
         print(userId);
-        storeUserData(userId); // Store user ID locally
+        // storeUserData(userId); // Store user ID locally
 
-        // Fetch employee personal info immediately upon signing in
-        // await fetchEmployeePersonalInfo(context);
-
-        Get.off(() => DashBoardScreeen()); // Navigate to dashboard
+        // Navigate to dashboard
+        Get.off(() => DashBoardScreeen());
         return;
       }
 
@@ -62,19 +60,21 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (res.isSignedIn) {
-        String userId = await Amplify.Auth.getCurrentUser().then((user) => user.userId);
-        print(userId);
-        storeUserData(userId); // Store user ID locally
+        String empId = userIdController.text.trim(); // Use the value from userIdController
+        print(empId);
+        storeUserData(empId); // Store user ID locally
 
         // Fetch employee personal info after successful sign in
         // await fetchEmployeePersonalInfo(context);
 
-        Get.off(() => DashBoardScreeen()); // Navigate to dashboard
+        // Navigate to dashboard
+        Get.off(() => DashBoardScreeen());
       }
     } on AuthException catch (e) {
       _showErrorDialog(context, e.message); // Show error dialog if sign-in fails
     }
   }
+
 
   // Future<void> fetchEmployeePersonalInfo(BuildContext context) async {
   //   try {

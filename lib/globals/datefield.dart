@@ -157,12 +157,14 @@ class PhoneField extends StatelessWidget {
   final TextEditingController controller;
   final String? errorMessage;
   final Function(BuildContext context) onTap;
+  final Function? onFieldTapped; // New callback to clear error
 
   const PhoneField({
     Key? key,
     required this.controller,
     this.errorMessage,
     required this.onTap,
+    this.onFieldTapped, // Add the new parameter
   }) : super(key: key);
 
   @override
@@ -178,12 +180,12 @@ class PhoneField extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 4), // Adjust padding below error message
             child: Text(
               errorMessage!,
-              style: const TextStyle(color: Colors.red, fontSize: 12), // Error text styling
+              style: const TextStyle(color: Colors.red, fontSize: 8), // Error text styling
             ),
           ),
         Container(
-          width: size.width * 0.210, // Adjust width for better layout
-          height: size.height * 0.030,
+          width: size.width * 0.195, // Adjust width for better layout
+          height: size.height * 0.033,
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.grey.shade400, width: 1),
@@ -203,9 +205,12 @@ class PhoneField extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => onTap(context), // Trigger the date picker on tap
+                  onTap: () {
+                    onFieldTapped?.call(); // Clear error if user taps the field
+                    onTap(context); // Trigger the date picker on tap
+                  },
                   child: Padding(
-                    padding:  EdgeInsets.only(right: 3),
+                    padding: EdgeInsets.all(4.0),
                     child: Icon(
                       Icons.calendar_today,
                       color: Colors.grey.shade700,
@@ -221,6 +226,7 @@ class PhoneField extends StatelessWidget {
     );
   }
 }
+
 
 
 // Future<void> applyForLeave() async {

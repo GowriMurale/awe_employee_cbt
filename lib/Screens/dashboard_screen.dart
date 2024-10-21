@@ -415,29 +415,53 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   TextEditingController destination=TextEditingController();
   TextEditingController remarks=TextEditingController();
 
+  DateTime? _fromDate;
+  DateTime? _toDate;
 
+  Future<void> _selectedDate(BuildContext context, TextEditingController controller, bool isFromDate) async {
+    // Set the initial date based on whether it's the "From Date" or "To Date"
+    DateTime initialDate = DateTime.now(); // Default to current date for initial selection
 
-  Future<void> _selectedDate(BuildContext context, TextEditingController controller, String fieldType) async {
-    final DateTime today = DateTime.now();
+    if (!isFromDate && _fromDate == null) {
+      // If trying to select "To Date" without having set "From Date" first
+      _showErrorDialog(context, "Please select the From Date first.");
+      return; // Exit early as "To Date" should not be selected before "From Date"
+    }
 
-    final DateTime? picked = await showDatePicker(
+    if (!isFromDate) {
+      // If selecting "To Date", ensure it starts from "From Date"
+      initialDate = _fromDate!; // Default initial date is the selected "From Date"
+    }
+
+    // Set the first date for the date picker based on whether it's "From Date" or "To Date"
+    DateTime firstDate = isFromDate ? DateTime.now() : _fromDate!; // Allow "To Date" from the selected "From Date" onwards
+
+    // Show the date picker
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: today, // Default to today's date
-      firstDate: today, // Disable previous dates
-      lastDate: DateTime(today.year + 10), // Set an upper limit if needed
+      initialDate: initialDate,
+      firstDate: firstDate, // Disable all dates before the selected "From Date"
+      lastDate: DateTime(2101),
     );
 
-    if (picked != null) {
+    if (pickedDate != null) {
       setState(() {
-        // Format the date as you desire
-        controller.text = "${picked.day}/${picked.month}/${picked.year}";
+        String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+        controller.text = formattedDate;
 
-        // Clear the error message based on the field type
-        if (fieldType == 'departure') {
-          departureError = null;  // Clear departure error
-        } else if (fieldType == 'arrival') {
-          arrivalError = null;    // Clear arrival error
+        if (isFromDate) {
+          _fromDate = pickedDate; // Update the "From Date"
+        } else {
+          // Validate if "To Date" is selected before "From Date"
+          if (pickedDate.isBefore(_fromDate!)) {
+            _showErrorDialog(context, "To Date must be on or after From Date.");
+            return; // Exit early if the date is invalid
+          }
+          _toDate = pickedDate; // Update the "To Date"
         }
+
+        // Optionally calculate days between dates if both are selected
+
       });
     }
   }
@@ -473,7 +497,9 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
   Future<void> applyTicketRequest(String departureText, String arrivalText, String destinationText, String remarksText) async {
     // Get current user's ID
-    String userId = await Amplify.Auth.getCurrentUser().then((user) => user.userId);
+    final box = GetStorage();
+    String empId = box.read('userId') ?? ''; // Use the value from the userIdController
+    print(empId);
 
     // Validate input fields
     if (departureText.isEmpty || arrivalText.isEmpty || destinationText.isEmpty || remarksText.isEmpty) {
@@ -521,7 +547,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
     // Submit the ticket request
     final ticketRequest = TicketRequest(
-      empID: userId, // Use current user's ID
+      empID: empId, // Use current user's ID
       departureDate: TemporalDate(fromDate),
       arrivalDate: TemporalDate(toDate),
       destination: destinationText,
@@ -564,14 +590,17 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   Future<void> fetchTicketRequests() async {
     try {
       // Get the current user's ticket requests
-      String userId = await Amplify.Auth.getCurrentUser().then((user) => user.userId);
+      final box = GetStorage();
+      String empId = box.read('userId') ?? '';
+      print(empId);
 
       final request = ModelQueries.list(
         TicketRequest.classType,
-        where: TicketRequest.EMPID.eq(userId), // Fetch tickets for the current user
+        where: TicketRequest.EMPID.eq(empId), // Fetch tickets for the current user
       );
 
       final response = await Amplify.API.query(request: request).response;
+       print(response);
 
       // Check for errors in the response
       if (response.errors.isNotEmpty || response.data == null) {
@@ -689,7 +718,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(width: size.width * 0.155),
+                      SizedBox(width: size.width * 0.165),
                       Text(
                         "Request Ticket",
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'Inter'),
@@ -700,17 +729,18 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(height: size.height * 0.012),
                  Container(
                    width: size.width * 0.35,
-                   height: size.height * 0.43,
+                   height: size.height * 0.45,
                    decoration: BoxDecoration(
                        color: ticket
                    ),
                    child: Column(
                      children: [
+                       SizedBox(height: size.height * 0.030),
                        Row(
                          children: [
-                           SizedBox(width: size.width * 0.032,),
+                           SizedBox(width: size.width * 0.042,),
                            Text('Departure Date ',style: TextStyle(color: black,fontSize: 14, fontFamily: 'Inter'),),
-                           SizedBox(width: size.width * 0.012,),
+                           SizedBox(width: size.width * 0.016,),
                            Column(
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
@@ -723,8 +753,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                    ),
                                  ),
                                Container(
-                                 width: size.width * 0.105,
-                                 height: size.height * 0.0340,
+                                 width: size.width * 0.097,
+                                 height: size.height * 0.036,
                                  decoration: BoxDecoration(
                                      color: Colors.white,
                                      border: Border.all(color: Colors.grey.shade400,width: 1)
@@ -734,7 +764,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                    child: TextField(
                                      controller: departure,
                                      style: TextStyle(
-                                       fontSize: 09, // Set a smaller font size for the picked date
+                                       fontSize: 11, // Set a smaller font size for the picked date
                                        color: Colors.black, // You can also control the color of the text
                                      ),
                                      textAlignVertical: TextAlignVertical.center,
@@ -742,10 +772,10 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                        border: InputBorder.none,
                                        contentPadding: EdgeInsets.only(left: 5, bottom: 19),
                                        hintText: 'dd/mm/yy',
-                                       hintStyle: TextStyle(fontSize: 10),
+                                       hintStyle: TextStyle(fontSize: 11),
                                        suffixIcon: IconButton(
                                          padding: EdgeInsets.only(bottom: 0.5,left: 10),
-                                         onPressed: () => _selectDate(context, departure), // Correct the onPressed
+                                         onPressed: () => _selectedDate(context, departure,true), // Correct the onPressed
                                          icon: Icon(
                                            Icons.calendar_month,
                                            size: 12,
@@ -765,9 +795,9 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                        // Arrival Date Field with Error
                        Row(
                          children: [
-                           SizedBox(width: size.width * 0.030,),
+                           SizedBox(width: size.width * 0.042,),
                            Text('Arrival  Date ',style: TextStyle(color: black,fontSize: 14, fontFamily: 'Inter'),),
-                           SizedBox(width: size.width * 0.032,),
+                           SizedBox(width: size.width * 0.028,),
                            Column(
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
@@ -780,8 +810,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                    ),
                                  ),
                                Container(
-                                 width: size.width * 0.105,
-                                 height: size.height * 0.030,
+                                 width: size.width * 0.097,
+                                 height: size.height * 0.036,
                                  decoration: BoxDecoration(
                                      color: Colors.white,
                                      border: Border.all(color: Colors.grey.shade400,width: 1)
@@ -791,7 +821,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                    child: TextField(
                                      controller: arrival,
                                      style: TextStyle(
-                                       fontSize: 09, // Set a smaller font size for the picked date
+                                       fontSize: 11, // Set a smaller font size for the picked date
                                        color: Colors.black, // You can also control the color of the text
                                      ),
                                      textAlignVertical: TextAlignVertical.center,
@@ -799,10 +829,10 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                        border: InputBorder.none,
                                        contentPadding: EdgeInsets.only(left: 5, bottom: 19),
                                        hintText: 'dd/mm/yy',
-                                       hintStyle: TextStyle(fontSize: 10),
+                                       hintStyle: TextStyle(fontSize: 11),
                                        suffixIcon: IconButton(
                                          padding: EdgeInsets.only(bottom: 0.5,left: 10),
-                                         onPressed: () => _selectDate(context, arrival), // Correct the onPressed
+                                         onPressed: () => _selectedDate(context, arrival,false), // Correct the onPressed
                                          icon: Icon(
                                            Icons.calendar_month,
                                            size: 12,
@@ -822,9 +852,9 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                        // Destination Field with Error
                        Row(
                          children: [
-                           SizedBox(width: size.width * 0.030,),
+                           SizedBox(width: size.width * 0.042,),
                            Text('Destination',style: TextStyle(color: black,fontSize: 14, fontFamily: 'Inter'),),
-                           SizedBox(width: size.width * 0.040,),
+                           SizedBox(width: size.width * 0.034,),
                            Column(
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
@@ -836,7 +866,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                      style: TextStyle(color: Colors.red, fontSize: 9), // Error text styling
                                    ),
                                  ),
-                               requestContainer(context, destination, size.width * 0.105, size.height * 0.032,setDialogState),
+                               requestContainer(context, destination, size.width * 0.097, size.height * 0.036,setDialogState),
                              ],
                            ),
                          ],
@@ -846,9 +876,9 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                        // Remarks Field with Error
                        Row(
                          children: [
-                           SizedBox(width: size.width * 0.030,),
+                           SizedBox(width: size.width * 0.042,),
                            Text('Remarks',style: TextStyle(color: black,fontSize: 14, fontFamily: 'Inter'),),
-                           SizedBox(width: size.width * 0.055,),
+                           SizedBox(width: size.width * 0.045,),
                            Column(
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
@@ -869,6 +899,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                  ),
                                  child: TextField(
                                    controller: remarks,
+                                   style: TextStyle(fontSize: 13),
                                    // contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.010, horizontal: size.width * 0.007),
                                    decoration: InputDecoration(
                                      hintText: 'Text Here',
@@ -883,28 +914,43 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                              ],
                            ),
                          ],
+
                        ),
                        SizedBox(height: size.height * 0.035),
 
                        // Apply and Cancel Buttons
                        Row(
                          children: [
-                           SizedBox(width: size.width * 0.095),
-                           MaterialButton(
-                             onPressed: () {
-                               Navigator.pop(context); // Cancel button action
-                             },
-                             minWidth: size.width * 0.052,
-                             height: size.height * 0.043,
-                             child: Text(
-                               'Cancel',
-                               style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Inter', color: Colors.black),
+                           SizedBox(width: size.width * 0.125),
+                           Container(
+                             decoration: BoxDecoration(
+                               border: Border.all(color: grey), // Outline border color
+                               borderRadius: BorderRadius.circular(0), // Adjust the border radius as needed
+                             ),
+                             child: MaterialButton(
+                               onPressed: () {
+                                 Navigator.pop(context);
+                               },
+                               minWidth: size.width * 0.052, // Adjust width as needed
+                               height: size.height * 0.043, // Adjust height as needed
+                               shape: RoundedRectangleBorder(
+                                 borderRadius: BorderRadius.circular(0), // Keep border radius consistent
+                               ),
+                               child: Text(
+                                 'Cancel',
+                                 style: TextStyle(
+                                   fontFamily: 'Inter',
+                                   fontSize: 14,
+                                   fontWeight: FontWeight.bold,
+                                   color: black,
+                                 ),
+                               ),
                              ),
                            ),
-                           SizedBox(width: size.width * 0.045),
+                           SizedBox(width: size.width * 0.025),
                            MaterialButton(
-                             minWidth: size.width * 0.052,
-                             height: size.height * 0.043,
+                             minWidth: size.width * 0.060, // Adjust width as needed
+                             height: size.height * 0.046,
                              onPressed: () {
                                validateFields(); // Validate fields before submitting
                                if (departureError == null &&
@@ -926,8 +972,10 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                            child: Text('No', style: TextStyle(color: Colors.red)),
                                          ),
                                          TextButton(
-                                           onPressed: () {
-                                             Navigator.of(context).pop();
+                                           onPressed: () async {
+
+                                            await applyTicketRequest(departure.text, arrival.text, destination.text, remarks.text);
+
                                              // Call your apply function here with the provided input
                                            },
                                            child: Text('Yes', style: TextStyle(color: Colors.green)),
@@ -938,8 +986,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                  );
                                }
                              },
-                             color: Colors.black,
-                             child: Text('Apply', style: TextStyle(fontSize: 13, color: Colors.white, fontFamily: 'Inter')),
+                             child: Text('Apply', style: TextStyle(fontSize: 14, color:black,fontWeight: FontWeight.bold, fontFamily: 'Inter')),
+                             color: Colors.yellow,
                            ),
                          ],
                        ),
@@ -1240,12 +1288,56 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     TextEditingController destination=TextEditingController();
     TextEditingController remarks=TextEditingController();
 
+    String? departureError;
+    String? arrivalError;
+    String? destinationError;
+    String? remarksError;
+
     final Size size = MediaQuery.of(context).size;
     Get.dialog(
       Dialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: StatefulBuilder(
             builder: (BuildContext context,StateSetter setDialogState ){
+              void validateFields() {
+                setDialogState(() {
+                  departureError = departure.text.isEmpty ? 'This field is required' : null;
+                  arrivalError = arrival.text.isEmpty ? 'This field is required' : null;
+                  destinationError = destination.text.isEmpty ? 'This field is required' : null;
+                  remarksError = remarks.text.isEmpty ? 'This field is required' : null;
+                });
+              }
+
+              // Function to clear error when user starts typing
+              void clearErrorOnChange(TextEditingController controller, String? errorField, String fieldName) {
+                controller.addListener(() {
+                  setDialogState(() {
+                    if (controller.text.isNotEmpty) {
+                      switch (fieldName) {
+                        case 'departure':
+                          departureError = null;
+                          break;
+                        case 'arrival':
+                          arrivalError = null;
+                          break;
+                        case 'destination':
+                          destinationError = null;
+                          break;
+                        case 'remarks':
+                          remarksError = null;
+                          break;
+                      }
+                    }
+                  });
+                });
+              }
+
+              // Attach listeners to each field to dynamically clear the error
+              clearErrorOnChange(departure, departureError, 'departure');
+              clearErrorOnChange(arrival, arrivalError, 'arrival');
+              clearErrorOnChange(destination, destinationError, 'destination');
+              clearErrorOnChange(remarks, remarksError, 'remarks');
+
               return Container(
                 padding: EdgeInsets.all(8),
                 width:  size.width * 0.545,
@@ -1264,10 +1356,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                           "Request Ticket",
                           style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold,fontFamily:  'Inter'),
                         ),
-                        // SizedBox(width: size.width * 0.130,),
-                        // IconButton(onPressed: (){
-                        //   Navigator.pop(context);
-                        // }, icon: Icon(Icons.cancel_outlined,size: 25,color: black,))
                       ],
                     ),
                     Divider(),
@@ -1307,23 +1395,23 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                     child: Material(
                                       color: Colors.transparent,
                                       child: TextField(
-                                        controller: arrival,
+                                        controller: departure,
                                         style: TextStyle(
-                                          fontSize: 7, // Set a smaller font size for the picked date
+                                          fontSize: 09, // Set a smaller font size for the picked date
                                           color: Colors.black, // You can also control the color of the text
                                         ),
                                         textAlignVertical: TextAlignVertical.center,
                                         decoration: InputDecoration(
                                           border: InputBorder.none,
-                                          contentPadding: EdgeInsets.only(left: 2, bottom: 20),
+                                          contentPadding: EdgeInsets.only(left: 5, bottom: 19),
                                           hintText: 'dd/mm/yy',
-                                          hintStyle: TextStyle(fontSize: 7),
+                                          hintStyle: TextStyle(fontSize: 10),
                                           suffixIcon: IconButton(
-                                            padding: EdgeInsets.only(bottom: 0.5,left: 14),
-                                            onPressed: () => _selectDate(context, arrival), // Correct the onPressed
+                                            padding: EdgeInsets.only(bottom: 0.5,left: 10),
+                                            onPressed: () => _selectDate(context, departure), // Correct the onPressed
                                             icon: Icon(
                                               Icons.calendar_month,
-                                              size: 10,
+                                              size: 12,
                                               color: Colors.black,
                                             ),
                                           ),
@@ -1342,52 +1430,52 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                               Text('Arrival  Date ',style: TextStyle(color: black,fontSize: 12, fontFamily: 'Inter'),),
                               SizedBox(width: size.width * 0.042,),
                               Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if ( arrivalError!= null)
-                                    Padding(
-                                      padding: EdgeInsets.only(bottom: 2), // Adjust padding below error message
-                                      child: Text(
-                                        arrivalError!,
-                                        style: TextStyle(color: Colors.red, fontSize: 9), // Error text styling
-                                      ),
-                                    ),
-                                  Container(
-                                    width: size.width * 0.172,
-                                    height: size.height * 0.032,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border.all(color: Colors.grey.shade400,width: 1)
-                                    ),
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      child: TextField(
-                                        controller: departure,
-                                        style: TextStyle(
-                                          fontSize: 7, // Set a smaller font size for the picked date
-                                          color: Colors.black, // You can also control the color of the text
-                                        ),
-                                        textAlignVertical: TextAlignVertical.center,
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          contentPadding: EdgeInsets.only(left: 2, bottom: 20),
-                                          hintText: 'dd/mm/yy',
-                                          hintStyle: TextStyle(fontSize: 7),
-                                          suffixIcon: IconButton(
-                                            padding: EdgeInsets.only(bottom: 0.5,left: 14),
-                                            onPressed: () => _selectDate(context, departure), // Correct the onPressed
-                                            icon: Icon(
-                                              Icons.calendar_month,
-                                              size: 10,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if ( arrivalError!= null)
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 2), // Adjust padding below error message
+                              child: Text(
+                                arrivalError!,
+                                style: TextStyle(color: Colors.red, fontSize: 9), // Error text styling
+                              ),
+                            ),
+                          Container(
+                            width: size.width * 0.172,
+                            height: size.height * 0.032,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Colors.grey.shade400,width: 1)
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: TextField(
+                                controller: arrival,
+                                style: TextStyle(
+                                  fontSize: 09, // Set a smaller font size for the picked date
+                                  color: Colors.black, // You can also control the color of the text
+                                ),
+                                textAlignVertical: TextAlignVertical.center,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.only(left: 5, bottom: 19),
+                                  hintText: 'dd/mm/yy',
+                                  hintStyle: TextStyle(fontSize: 10),
+                                  suffixIcon: IconButton(
+                                    padding: EdgeInsets.only(bottom: 0.5,left: 10),
+                                    onPressed: () => _selectDate(context, arrival), // Correct the onPressed
+                                    icon: Icon(
+                                      Icons.calendar_month,
+                                      size: 12,
+                                      color: Colors.black,
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
+                            ),
+                          ),
+                        ],
+                      ),
                             ],
                           ),
                           SizedBox(height: size.height * 0.020,),
@@ -1407,7 +1495,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                         style: TextStyle(color: Colors.red, fontSize: 9), // Error text styling
                                       ),
                                     ),
-                                  requestContainer(context, destination, size.width * 0.170, size.height * 0.028,setDialogState),
+                                  requestContainer(context, destination, size.width * 0.172, size.height * 0.032,setDialogState),
                                 ],
                               ),
                             ],
@@ -1441,8 +1529,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                       // contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.010, horizontal: size.width * 0.007),
                                       decoration: InputDecoration(
                                         hintText: 'Text Here',
-                                        hintStyle: TextStyle(fontSize: 8,color: Colors.grey.shade400),
-                                        contentPadding: EdgeInsets.all(2),
+                                        hintStyle: TextStyle(fontSize: 10,color: Colors.grey.shade400),
+                                        contentPadding: EdgeInsets.all(5),
                                         isDense: true, // Make the field more compact
                                         border: InputBorder.none,
                                       ),
@@ -1486,7 +1574,39 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                               MaterialButton(
                                 minWidth: size.width * 0.125,
                                 height: size.height * 0.048,
-                                onPressed: (){},
+                                onPressed: () {
+                                  validateFields(); // Validate fields before submitting
+                                  if (departureError == null &&
+                                      arrivalError == null &&
+                                      destinationError == null &&
+                                      remarksError == null) {
+                                    // Show confirmation dialog before applying
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Confirm Submission'),
+                                          content: Text('Are you sure you want to apply?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(); // Dismiss the dialog
+                                              },
+                                              child: Text('No', style: TextStyle(color: Colors.red)),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                // Call your apply function here with the provided input
+                                              },
+                                              child: Text('Yes', style: TextStyle(color: Colors.green)),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
                                 child: Text('Apply',style: TextStyle(fontSize: 11,fontWeight: FontWeight.bold,fontFamily: 'Inter',),),
                                 color: Colors.yellow,
                                 textColor: Colors.black,
@@ -1583,14 +1703,18 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   }
 
 
+
   Future<void> fetchLeaveData() async {
     try {
       // Fetch the current user's ID
-      String userId = await Amplify.Auth.getCurrentUser().then((user) => user.userId);
+      final box = GetStorage();
+      String empId = box.read('userId') ?? '';
+      print(empId);
 
       // Define the GraphQL query to get all leave data
-      final request = ModelQueries.list(LeaveStatus.classType);
+      final request = ModelQueries.list<LeaveStatus>(LeaveStatus.classType); // Explicitly specify the type
       final response = await Amplify.API.query(request: request).response;
+       print(response);
 
       // Check for errors
       if (response.errors.isNotEmpty) {
@@ -1603,7 +1727,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       List<LeaveStatus?> leaveStatuses = response.data?.items ?? [];
 
       // Filter leave statuses based on the current user's ID
-      List<LeaveStatus?> userLeaveStatuses = leaveStatuses.where((leave) => leave?.empID == userId).toList();
+      List<LeaveStatus?> userLeaveStatuses = leaveStatuses.where((leave) => leave?.empID == empId).toList();
 
       setState(() {
         allLeaveData = userLeaveStatuses; // Store only the current user's leave data
@@ -1616,6 +1740,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       _showAlertDialog('Error', 'An unexpected error occurred.');
     }
   }
+
 
 
 
@@ -1693,32 +1818,64 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
 
 
-  Future<void> deleteLeave(LeaveStatus leaveToDelete) async {
+  Future<void> deleteLeave(String empId) async {
     try {
-      final request = ModelMutations.delete(leaveToDelete);
-      final response = await Amplify.API.mutate(request: request).response;
+      // Fetch leave records for the given empId
+      final request = ModelQueries.list<LeaveStatus>(LeaveStatus.classType);
+      final response = await Amplify.API.query(request: request).response;
 
-      // Check for errors
+      // Check for errors in the query
       if (response.errors.isNotEmpty) {
-        print('Errors deleting leave: ${response.errors}');
-        _showAlertDialog('Error', 'Failed to delete leave request.');
+        print('Errors fetching leave records: ${response.errors}');
+        _showAlertDialog('Error', 'Failed to fetch leave records for deletion.');
         return;
       }
 
-      // Remove the deleted leave from both lists
-      setState(() {
-        allLeaveData.removeWhere((leave) => leave?.id == leaveToDelete.id);
-        filteredLeaveData.removeWhere((leave) => leave?.id == leaveToDelete.id);
-      });
+      // Get all leave records for the specified empId
+      List<LeaveStatus?> leaveRecords = response.data?.items ?? [];
+      List<LeaveStatus?> leavesToDelete = leaveRecords.where((leave) => leave?.empID == empId).toList();
 
-      print('Leave deleted successfully: ${leaveToDelete.toString()}');
+      if (leavesToDelete.isEmpty) {
+        print('No leave records found for empId: $empId');
+        _showAlertDialog('Error', 'No leave records found for this employee ID.');
+        return;
+      }
 
-      _showAlertDialog('Success', 'Leave request deleted successfully.');
+      // Loop through the leaves and delete each one
+      for (LeaveStatus? leave in leavesToDelete) {
+        if (leave != null) {
+          print('Attempting to delete leave with ID: ${leave.id}');
+
+          final deleteRequest = ModelMutations.delete(leave);
+          final deleteResponse = await Amplify.API.mutate(request: deleteRequest).response;
+
+          // Check for errors during deletion
+          if (deleteResponse.errors.isNotEmpty) {
+            print('Errors deleting leave ID ${leave.id}: ${deleteResponse.errors}');
+            continue; // Skip this leave and try the next one
+          }
+
+          // Successfully deleted
+          print('Leave deleted successfully: ${leave.toString()}');
+
+          // Remove from the local state
+          setState(() {
+            allLeaveData.removeWhere((l) => l?.id == leave.id);
+            filteredLeaveData.removeWhere((l) => l?.id == leave.id);
+          });
+        }
+      }
+
+      // Show success message
+      _showAlertDialog('Success', 'Leave requests deleted successfully.');
     } catch (e) {
       print('Failed to delete leave: $e');
       _showAlertDialog('Error', 'An unexpected error occurred.');
     }
   }
+
+
+
 
   /// Show an AlertDialog using GetX
   void _showAlertDialog(String title, String content) {
@@ -1740,7 +1897,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     );
   }
 
-  void _ticketpendingDialog(BuildContext context, Function(String) onStatusChanged  ) {
+  void _ticketpendingDialog(BuildContext context, int rowIndex,TicketRequest request ) {
     final Size size = MediaQuery.of(context).size;
     String status = 'Pending'; // Initialize the status locally
 
@@ -1857,11 +2014,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         minWidth: size.width * 0.062,
                         height: size.height * 0.052,
                         onPressed: () {
-                          _ticketCancelConfirmation(context, () {
-                            // Update the status to 'Cancelled' and pass it back to the parent
-                            onStatusChanged('Cancelled');
-                            Navigator.pop(context);
-                          });
                         },
                         child: Text(
                           'Cancel',
@@ -1883,7 +2035,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     );
   }
 
-  void _ticketapprovedDialog(BuildContext context,  Function(String) onStatusChanged) {
+  void _ticketapprovedDialog(BuildContext context,int rowIndex,TicketRequest request ) {
     final Size size = MediaQuery.of(context).size;
     Get.dialog(
       Dialog(
@@ -1996,11 +2148,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     minWidth: size.width * 0.062,
                     height: size.height * 0.047,
                     onPressed: () {
-                      _ticketCancelConfirmation(context, () {
-                        // Update the status to 'Cancelled' and pass it back to the parent
-                        onStatusChanged('Cancelled');
-                        Navigator.pop(context);
-                      });
                     },
                     child: Text(
                       'Cancel',
@@ -2020,7 +2167,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     );
   }
 
-  void _ticketrejectedDialog(BuildContext context, ) {
+  void _ticketrejectedDialog(BuildContext context,int rowIndex,TicketRequest request ) {
     final Size size = MediaQuery.of(context).size;
     Get.dialog(
       Dialog(
@@ -2152,15 +2299,169 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     );
   }
 
-  void updateLeaveStatus(int rowIndex, String newStatus) {
-    // Update your leave data model to set the new status
-    // This might involve setting the status in your `filteredLeaveData[rowIndex]`
-    // filteredLeaveData[rowIndex]?.empStatus = newStatus; // Assuming empStatus is your status field
+  void _phoneticketpendingDialog(BuildContext context, int rowIndex,TicketRequest request ) {
+    final Size size = MediaQuery.of(context).size;
+    String status = 'Pending'; // Initialize the status locally
+
+    Get.dialog(
+      StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return Dialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            child: Container(
+              width: size.width * 0.260,
+              decoration: BoxDecoration(
+                color: dialog,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    height:  size.height * 0.057,
+                    color: Colors.yellow,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: size.width * 0.108),
+                        Text(
+                          'Pending',
+                          style: TextStyle(fontFamily: 'Inter', fontSize: 22,fontWeight: FontWeight.bold ,color: Colors.black),
+                        ),
+                        SizedBox(width: size.width * 0.065),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(Icons.cancel_outlined, size: 26, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.014),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width:size.width *  0.050,),
+                      Text('Name',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      SizedBox(width:size.width *  0.057,),
+                      Text('Rahul Kumar',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.014,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width:size.width *  0.050,),
+                      Text('Badge',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      SizedBox(width:size.width *  0.055,),
+                      Text('50598',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.014,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width:size.width *  0.050,),
+                      Text('Dept/Div',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      SizedBox(width:size.width *  0.044,),
+                      Text('50598',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.014,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width:size.width *  0.050,),
+                      Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      SizedBox(width:size.width *  0.047,),
+                      Text('Trainer',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.014,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width:size.width *  0.050,),
+                      Text('Destination',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      SizedBox(width:size.width *  0.032,),
+                      Text( 'Singapore',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.014,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width:size.width *  0.050,),
+                      Text('Departure Date',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      SizedBox(width:size.width *  0.016,),
+                      Text('16/10/2024',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black),),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.014,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width:size.width *  0.050,),
+                      Text('Arrival Date',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      SizedBox(width:size.width *  0.033,),
+                      Text( '19/10/2024',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.024),
+                  Row(
+                    children: [
+                      SizedBox(width: size.width * 0.106),
+                      MaterialButton(
+                        minWidth: size.width * 0.062,
+                        height: size.height * 0.052,
+                        onPressed: () {
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(fontSize: 16, fontFamily: 'Inter'),
+                        ),
+                        color: Colors.yellow,
+                        textColor: Colors.black,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.030),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      barrierDismissible: false,
+    );
   }
+
+  Future<void> updateLeaveStatus(String leaveId, String newStatus) async {
+    try {
+      final request = ModelMutations.update<LeaveStatus>(LeaveStatus.classType as LeaveStatus , apiName: leaveId, headers: {
+        'empStatus': newStatus,
+      });
+      final response = await Amplify.API.mutate(request: request).response;
+
+      if (response.errors.isNotEmpty) {
+        print('Errors: ${response.errors}');
+        _showAlertDialog('Error', 'Failed to update leave status.');
+      } else {
+        print('Leave status updated successfully.');
+      }
+    } catch (e) {
+      print('Failed to update leave status: $e');
+      _showAlertDialog('Error', 'An unexpected error occurred.');
+    }
+  }
+
 
   void _pendingDialog(BuildContext context, int rowIndex, LeaveStatus leave, ) {
     final Size size = MediaQuery.of(context).size;
     String status = 'Pending'; // Initialize the status locally
+    final box = GetStorage();
+    String empId = box.read('userId') ?? '';
 
     Get.dialog(
       StatefulBuilder(
@@ -2298,7 +2599,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       MaterialButton(
                         minWidth: size.width * 0.062,
                         height: size.height * 0.052,
-                        onPressed: () {
+                        onPressed: () async {
+                          await updateLeaveStatus(leave.id, 'Cancelled');
                         },
                         child: Text(
                           'Cancel',
@@ -2812,7 +3114,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     );
   }
 
-  void _phonependingDialog(BuildContext context, int rowIndex, LeaveStatus leave,Function(String) onStatusChanged) {
+  void _phonependingDialog(BuildContext context, int rowIndex, LeaveStatus leave,) {
     final Size size = MediaQuery.of(context).size;
     String status = 'Pending'; // Initialize the status locally
 
@@ -2918,7 +3220,11 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(width:size.width *  0.063,),
                       Text('Apply to',style: TextStyle(fontFamily: 'Inter',fontSize: 12,color: black),),
                       SizedBox(width:size.width *  0.098,),
-                      //Text(leave.applyTo ?? 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 12,color: black),),
+                      Text(
+                        leave.applyTo != null && leave.applyTo is List
+                            ? (leave.applyTo as List).join(', ')
+                            : leave.applyTo?.toString() ?? '',
+                        style: TextStyle(fontFamily: 'Inter',fontSize: 12,color: black),)
                     ],
                   ),
                   SizedBox(height: size.height * 0.014,),
@@ -2949,7 +3255,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         minWidth: size.width * .150,
                         height: size.height * 0.047,
                         onPressed: () {
-                          _showCancelConfirmation(context, onStatusChanged);
+
                         },
                         child: Text(
                           'Cancel',
@@ -3430,6 +3736,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               DataColumn(label: Text('Status', style: headerTextStyle)),
             ],
             rows: filteredTicketRequests.map((request) {
+              int index = filteredTicketRequests.indexOf(request);
               return DataRow(cells: [
                 DataCell(Text('Rahul', style: rowTextStyle)), // Static Name
                 DataCell(Text('50598', style: rowTextStyle)), // Static Badge Number
@@ -3441,8 +3748,20 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     : 'N/A', style: rowTextStyle)), // Dynamic Departure Date
                 DataCell(Text(request!.arrivalDate != null
                     ? DateFormat('dd/MM/yyyy').format(request.arrivalDate!.getDateTime())
-                    : 'N/A', style: rowTextStyle)), // Dynamic Arrival Date
-                DataCell(Text(request?.hrStatus ?? 'Pending', style: rowTextStyle)),
+                    : 'N/A', style: rowTextStyle)),
+                // Dynamic Arrival Date
+                DataCell(
+                  GestureDetector(
+                    onTap: (){
+                      _ticketpendingDialog(context, index, request);
+                    },
+                    child: Text(
+                      request?.hrStatus ?? 'Pending',  // Show status text (default to 'Pending' if null)
+                      style: rowTextStyle,
+                    ),
+                  ),
+                )
+
               ]);
             }).toList(),
           ),
@@ -3642,8 +3961,17 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     )),
                     DataCell(Text('${leave.days ?? 0} days', style: phonerowTextStyle)),
                     DataCell(Text(leave.reason ?? '', style: phonerowTextStyle)),
-                    DataCell(Text(leave?.applyTo?.toString() ?? '', style: rowTextStyle)),
-                    DataCell(Text(leave?.empStatus?.toString() ?? '', style: rowTextStyle)),
+                    DataCell(Text(
+                      leave.applyTo != null && leave.applyTo is List
+                          ? (leave.applyTo as List).join(', ')
+                          : leave.applyTo?.toString() ?? '',
+                      style: phonerowTextStyle,
+                    )),
+                    DataCell(GestureDetector(
+                        onTap: (){
+                          _phonependingDialog(context, index, leave);
+                        },
+                        child: Text(leave?.empStatus?.toString() ?? 'Pending', style: phonerowTextStyle))),
                   ],
                 );
               }).toList(),
@@ -3666,77 +3994,48 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
             borderRadius: BorderRadius.circular(5),
             border: Border.all(color: Colors.grey, width: 1),
           ),
-          child:
-          SingleChildScrollView(
+          child: filteredTicketRequests.isNotEmpty
+           ? SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                headingRowHeight:  size.height * 0.042,
-                dataRowHeight: size.height * 0.040,
-                columnSpacing: size.width * 0.015,
-                columns: [
-                  DataColumn(label: Text('Name', style: phoneheaderTextStyle)),
-                  DataColumn(label: Text('Badge Number', style: phoneheaderTextStyle)),
-                  DataColumn(label: Text('Department', style: phoneheaderTextStyle)),
-                  DataColumn(label: Text('Position', style: phoneheaderTextStyle)),
-                  DataColumn(label: Text('Destination', style: phoneheaderTextStyle)),
-                  DataColumn(label: Text('Departure Date', style: phoneheaderTextStyle)),
-                  DataColumn(label: Text('Arrival Date', style: phoneheaderTextStyle)),
-                  DataColumn(label: Text('Status', style: phoneheaderTextStyle)),
-                  DataColumn(label: Text('Remarks', style: phoneheaderTextStyle)),
-
-                ],
-                rows: [
-                  DataRow(cells: [
-                    DataCell(Text('Rahul',style: phonerowTextStyle,)),
-                    DataCell(Text('50598',style: phonerowTextStyle,)),
-                    DataCell(Text('Welding',style: phonerowTextStyle,)),
-                    DataCell(Text('Trainer',style: phonerowTextStyle,)),
-                    DataCell(Text('Singapore',style: phonerowTextStyle,)),
-                    DataCell(Text('16/10/2024',style: phonerowTextStyle,)),
-                    DataCell(Text('19/10/2024',style: phonerowTextStyle,)),
-                    DataCell(
-                      GestureDetector(
-                        onTap: () {
-                          _ticketCancelConfirmation(context, () {
-                            setState(() {
-                              status1 = 'Cancelled';
-                            });
-                          } );
-                        },
-                        child: Text(status1, style: phonerowTextStyle),
-                      ),
-                    ),
-                    DataCell(Text('',style: phonerowTextStyle,)),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('Rahul',style: phonerowTextStyle,)),
-                    DataCell(Text('50598',style: phonerowTextStyle,)),
-                    DataCell(Text('Welding',style: phonerowTextStyle,)),
-                    DataCell(Text('Trainer',style: phonerowTextStyle,)),
-                    DataCell(Text('Singapore',style: phonerowTextStyle,)),
-                    DataCell(Text('16/08/2024',style: phonerowTextStyle,)),
-                    DataCell(Text('19/08/2024',style: phonerowTextStyle,)),
-                    DataCell(Text('Approved',style: phonerowTextStyle,)),
-                    DataCell(Text('',style: phonerowTextStyle,)),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('Rahul',style: phonerowTextStyle,)),
-                    DataCell(Text('50598',style: phonerowTextStyle,)),
-                    DataCell(Text('Welding',style: phonerowTextStyle,)),
-                    DataCell(Text('Trainer',style: phonerowTextStyle,)),
-                    DataCell(Text('Singapore',style: phonerowTextStyle,)),
-                    DataCell(Text('16/08/2024',style: phonerowTextStyle,)),
-                    DataCell(Text('19/08/2024',style: phonerowTextStyle,)),
-                    DataCell(Text('Approved',style: phonerowTextStyle,)),
-                    DataCell(Text('Reason for \n that',style: phonerowTextStyle,)),
-                  ]),
-                ],
-              ),
+            child: DataTable(
+              headingRowHeight: filteredTicketRequests.isEmpty ? 0 : size.height * 0.042,
+              dataRowHeight: size.height * 0.040,
+              columnSpacing: size.width * 0.015,
+              columns: [
+                DataColumn(label: Text('Name', style: phoneheaderTextStyle)),
+                DataColumn(label: Text('Badge Number', style: phoneheaderTextStyle)),
+                DataColumn(label: Text('Department', style: phoneheaderTextStyle)),
+                DataColumn(label: Text('Position', style: phoneheaderTextStyle)),
+                DataColumn(label: Text('Destination', style: phoneheaderTextStyle)),
+                DataColumn(label: Text('Departure Date', style: phoneheaderTextStyle)),
+                DataColumn(label: Text('Arrival Date', style: phoneheaderTextStyle)),
+                DataColumn(label: Text('Status', style: phoneheaderTextStyle)),
+              ],
+              rows: filteredTicketRequests.map((request) {
+                int index = filteredTicketRequests.indexOf(request);
+                return DataRow(cells: [
+                  DataCell(Text('Rahul', style: phonerowTextStyle)), // Static Name
+                  DataCell(Text('50598', style: phonerowTextStyle)), // Static Badge Number
+                  DataCell(Text('Welding', style: phonerowTextStyle)), // Static Department
+                  DataCell(Text('Trainer', style: phonerowTextStyle)), // Static Position
+                  DataCell(Text(request?.destination ?? 'Unknown', style: phonerowTextStyle)), // Dynamic Destination
+                  DataCell(Text(request?.departureDate != null
+                      ? DateFormat('dd/MM/yyyy').format(request!.departureDate!.getDateTime())
+                      : 'N/A', style: phonerowTextStyle)), // Dynamic Departure Date
+                  DataCell(Text(request!.arrivalDate != null
+                      ? DateFormat('dd/MM/yyyy').format(request.arrivalDate!.getDateTime())
+                      : 'N/A', style: phonerowTextStyle)), // Dynamic Arrival Date
+                  DataCell(GestureDetector(
+                      onTap: (){
+                        _phoneticketpendingDialog(context, index, request);
+                      },
+                      child: Text(request?.hrStatus ?? 'Pending', style: phonerowTextStyle))),
+                ]);
+              }).toList(),
             ),
           )
-      ),
+              : SizedBox(),
+      )
     );
 
   }
@@ -3872,7 +4171,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                 height: size.height * 0.03,
                 onPressed: () {
                   print(leave);
-                  deleteLeave(leave); // Delete leave from AWS DynamoDB
+                  // deleteLeave(emp); // Delete leave from AWS DynamoDB
                   Navigator.of(context).pop();
                 },
                 child: Text(
@@ -4232,8 +4531,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                           onPressed: () {
                             Get.to(() => ApplyLeaveScreen());
                           },
-                          minWidth: size.width * 0.085,
-                          height: size.height * 0.060,
+                          minWidth: size.width * 0.080,
+                          height: size.height * 0.055,
                           color: yellow,
                           child: Text(
                             'Apply Leave',
@@ -4258,7 +4557,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                 "Request Ticket",
                                 style: TextStyle(
                                   fontFamily: 'Inter',
-                                  fontSize: 15,
+                                  fontSize: 16,
                                   color: blue,
                                   fontWeight: FontWeight.bold,
                                   decoration: TextDecoration.none, // Remove default underline
@@ -4922,7 +5221,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                           hintStyle: TextStyle(fontSize: 9),
                           suffixIcon: IconButton(
                             padding: EdgeInsets.only(bottom: 0.05,left: 18),
-                            onPressed: () => _selectDate(context, from), // Correct the onPressed
+                            onPressed: () => _selectDate(context, from, isFromField: true),  // Correct the onPressed
                             icon: Icon(
                               Icons.calendar_month,
                               size: 11,
@@ -4993,7 +5292,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     color: yellow,
                     child: Text('Apply Leave',style: TextStyle(fontFamily: 'Inter,',fontSize: 15,fontWeight: FontWeight.bold,color: black),),
                   ),
-                  SizedBox(width: size.width * (isRecentLeaveSelected ? 0.010 : 0.015)),
+                  if (isRecentLeaveSelected)
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

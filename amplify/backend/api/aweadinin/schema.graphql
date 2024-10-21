@@ -1,3 +1,47 @@
+type WPTracking @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  tempID: String!
+  supportletterReqDate: AWSDate!
+  supportletterReceiveDate: AWSDate!
+  letterfile: String!
+  doesubmitdate: AWSDate!
+  doeapprovedate: AWSDate!
+  doeexpirydate: AWSDate!
+  doefile: String!
+  nlmssubmitdate: AWSDate!
+  submissionrefrenceno: AWSDate!
+  nlmsapprovedate: AWSDate!
+  ldreferenceno: String!
+  nlmsexpirydate: AWSDate!
+  nlmsfile: String!
+  bgsubmitdate: AWSDate!
+  bgreceivedate: AWSDate!
+  referenceno: String!
+  bgamount: String!
+  bgexpirydate: AWSDate!
+  bgfile: String!
+  tbapurchasedate: AWSDate!
+  jitpaamount: String!
+  jitpaexpirydate: AWSDate!
+  receiptno: String!
+  depositamount: String!
+  submitdateendorsement: AWSDate!
+  jitpafile: String!
+  immbdno: String!
+  docsubmitdate: AWSDate!
+  visaapprovedate: AWSDate!
+  visareferenceno: String!
+  visaFile: String!
+  departuredate: AWSDate!
+  arrivaldate: AWSDate!
+  cityname: String!
+  airfare: String!
+  airticketfile: String!
+  agentname: String!
+  mobSignDate: AWSDate!
+  mobFile: String!
+}
+
 type TicketRequest @model @auth(rules: [{ allow: public }]) {
   id: ID!
   empID: String!
@@ -8,31 +52,31 @@ type TicketRequest @model @auth(rules: [{ allow: public }]) {
   hrStatus: String
   hrDate: AWSDate
   hrRemarks: String
-  }
+}
 
 type EducationDetails @model @auth(rules: [{ allow: public }]) {
   id: ID!
   empID: String!
   crime: String
-  crimeDescription: String
-  emergencyContact: [String!]
-  experience: String!
-  employeeStatement: String!
-  description: String
+  crimeDesc: String
+  emgDetails: [String!]
+  noExperience: String!
+  empStatement: String!
+  desc  : String
   disease: String
-  diseaseDescription: String
+  diseaseDesc: String
   liquor: String
-  liquorDescription: String
+  liquorDesc: String
   noticePeriod: String!
-  perInterviewStatus: String!
-  perInterviewDescription: String
+  perIS: String!
+  perID: String
   referees: [String]
   relatives: [String]
-  salaryException: String
+  salaryExpectation: String
   supportInfo: String
   uploadResume: String!
   uploadCertificate: String!
-  uploadPassport: String!
+  uploadPp: String!
 }
 
 type PersonalDetails @model @auth(rules: [{ allow: public }]) {
@@ -41,36 +85,37 @@ type PersonalDetails @model @auth(rules: [{ allow: public }]) {
   age: Int!
   alternateNo: String
   agent: String
+  bwnIcNo: String
+  bwnIcExpiry: String
+  bwnIcColour: String
   contactNo: String!
-  countryOfBirth: String!
+  cob: String!
   contractType: String!
   chinese: String
-  dateOfBirth: String!
-  drivingLicense: String
+  dob: String!
+  driveLic: String
   email: String!
-  employeeType: String!
-  educationDetails: [String!]
+  empType: String!
+  eduDetails: [String!]
   familyDetails: [String]
   gender: String!
-  bruneiIcNo: String
-  bruneiIcExpiry: String
-  bruneiIcColour: String
+  lang: String!
   marital: String!
   name: String!
   nationality: String!
-  otherNationality: String
+  otherNation: String
   otherRace: String
   otherReligion: String
-  passportNo: String
-  passportIssued: String
-  passportExpiry: String
-  passportDestination: String
+  ppNo: String
+  ppIssued: String
+  ppExpiry: String
+  ppDestinate: String
   presentAddress: String!
   permanentAddress: String!
   profilePhoto: String!
   position: String!
   race: String!
-  religion: String! 
+  religion: String!
   workExperience: [String]
 }
 

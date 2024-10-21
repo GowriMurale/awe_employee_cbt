@@ -11,6 +11,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -53,12 +54,28 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   String? reasonError;
 
   Future<void> _selectDate(BuildContext context, TextEditingController controller, bool isFromDate) async {
-    DateTime firstDate = DateTime.now(); // Disable all previous dates
+    // Set the initial date based on whether it's the "From Date" or "To Date"
+    DateTime initialDate = DateTime.now(); // Default to current date for initial selection
 
+    if (!isFromDate && _fromDate == null) {
+      // If trying to select "To Date" without having set "From Date" first
+      _showErrorDialog(context, "Please select the From Date first.");
+      return; // Exit early as "To Date" should not be selected before "From Date"
+    }
+
+    if (!isFromDate) {
+      // If selecting "To Date", ensure it starts from "From Date"
+      initialDate = _fromDate!; // Default initial date is the selected "From Date"
+    }
+
+    // Set the first date for the date picker based on whether it's "From Date" or "To Date"
+    DateTime firstDate = isFromDate ? DateTime.now() : _fromDate!; // Allow "To Date" from the selected "From Date" onwards
+
+    // Show the date picker
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: isFromDate ? DateTime.now() : (_toDate ?? DateTime.now()),
-      firstDate: firstDate, // No previous dates allowed
+      initialDate: initialDate,
+      firstDate: firstDate, // Disable all dates before the selected "From Date"
       lastDate: DateTime(2101),
     );
 
@@ -68,18 +85,28 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
         controller.text = formattedDate;
 
         if (isFromDate) {
-          _fromDate = pickedDate;
+          _fromDate = pickedDate; // Update the "From Date"
         } else {
-          _toDate = pickedDate;
+          // Validate if "To Date" is selected before "From Date"
+          if (pickedDate.isBefore(_fromDate!)) {
+            _showErrorDialog(context, "To Date must be on or after From Date.");
+            return; // Exit early if the date is invalid
+          }
+          _toDate = pickedDate; // Update the "To Date"
         }
 
-        // Automatically calculate the number of days if both dates are selected
+        // Optionally calculate days between dates if both are selected
         if (_fromDate != null && _toDate != null) {
           _calculateDays();
         }
       });
     }
   }
+
+
+
+
+
 
   // Method to calculate the difference in days between two dates
   void _calculateDays() {
@@ -170,8 +197,10 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
 
 
   Future<void> applyForLeave() async {
-    // Get current user's ID
-    String userId = await Amplify.Auth.getCurrentUser().then((user) => user.userId);
+    // Get the employee ID from the userIdController
+    final box = GetStorage();
+    String empId = box.read('userId') ?? ''; // Use the value from the userIdController
+    print(empId);
 
     if (_selectedLeaveType == null || from.text.isEmpty || to.text.isEmpty || days.text.isEmpty || reason.text.isEmpty) {
       // Show validation error dialog
@@ -234,13 +263,10 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
 
       // If sick leave is selected, ensure medical certificate is provided
       String? medicalCertificate = null;
-      // if (_selectedLeaveType == 'Sick Leave') {
-      //   medicalCertificate = selectedMedicalCertificatePath ?? '';  // Assuming you're managing certificate upload
-      // }
 
       // Try to submit the leave request
       final leaveStatus = LeaveStatus(
-        empID: userId, // Use current user's ID
+        empID: empId, // Use empId from userIdController
         leaveType: _selectedLeaveType!,
         fromDate: TemporalDate(fromDate), // Parse the date correctly
         toDate: TemporalDate(toDate),     // Parse the date correctly
@@ -250,11 +276,12 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
         medicalCertificate: medicalCertificate,
         supervisorStatus: null, // Status will be updated later
         managerStatus: null,
-        empStatus: null,// Status will be updated later
+        empStatus: null, // Status will be updated later
       );
 
       final request = ModelMutations.create(leaveStatus);
       final response = await Amplify.API.mutate(request: request).response;
+      print(response);
 
       if (response.errors.isNotEmpty || response.data == null) {
         // Show error dialog if mutation failed
@@ -290,6 +317,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
       );
     }
   }
+
 
 
 
@@ -1886,6 +1914,10 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                                         onChanged: (String? newValue) {
                                           setState(() {
                                             _selectedLeaveType = newValue;
+                                            // Clear error message if a valid selection is made
+                                            if (newValue != null && newValue.isNotEmpty) {
+                                              leaveTypeError = null; // Clear error when valid selection is made
+                                            }
                                           });
                                         },
                                         items: _leaveTypes.map((String leaveType) {
@@ -1998,12 +2030,16 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                               ),
                             ),
                             SizedBox(width: size.width * 0.020),
-             
                             // From Date TextField
                             PhoneField(
                               controller: from,
                               errorMessage: fromDateError,
                               onTap: (context) => _selectDate(context, from, true),
+                              onFieldTapped: () {
+                                setState(() {
+                                  fromDateError = null; // Clear the error message when tapping the field
+                                });
+                              },
                             ),
              
                             SizedBox(width: size.width * 0.035),
@@ -2011,6 +2047,11 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                               controller: to,
                               errorMessage: toDateError,
                               onTap: (context) => _selectDate(context, to, false),
+                              onFieldTapped: () {
+                                setState(() {
+                                  toDateError = null; // Clear the error message when tapping the field
+                                });
+                              },
                             ),
                             // To Date TextField
 
@@ -2082,21 +2123,30 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                                 SizedBox(width: size.width * 0.015),
                                 Transform.scale(
                                   scale: 1.0, // Adjust this value to change the checkbox size
-                                  child: Container(
-                                    color: Colors.white,
-                                    child: Checkbox(
-                                      value: isManager,
-                                      onChanged: (bool? newValue) {
-                                        setState(() {
-                                          isManager = newValue ?? false;
-                                        });// Validate all fields when user selects/deselects
-                                      },
-                                      side: BorderSide(
-                                        color: Colors.grey.shade500, // Light grey border color
-                                        width: 1,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        isManager = !isManager; // Toggle the value
+                                        applyToError = null; // Clear the error message when interacting
+                                      });
+                                    },
+                                    child: Container(
+                                      color: Colors.white,
+                                      child: Checkbox(
+                                        value: isManager,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isManager = newValue ?? false;
+                                            applyToError = null; // Clear the error message
+                                          });
+                                        },
+                                        side: BorderSide(
+                                          color: Colors.grey.shade500, // Light grey border color
+                                          width: 1,
+                                        ),
+                                        activeColor: Colors.blue, // Optional: change checkbox color when selected
+                                        checkColor: Colors.white, // Optional: checkmark color
                                       ),
-                                      activeColor: Colors.blue, // Optional: change checkbox color when selected
-                                      checkColor: Colors.white, // Optional: checkmark color
                                     ),
                                   ),
                                 ),
@@ -2113,20 +2163,31 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                                 SizedBox(width: size.width * 0.015),
                                 Transform.scale(
                                   scale: 1.0, // Adjust this value to change the checkbox size
-                                  child: Checkbox(
-                                    value: isSuperior,
-                                    onChanged: (bool? newValue) {
+                                  child: GestureDetector(
+                                    onTap: () {
                                       setState(() {
-                                        isSuperior = newValue ?? false;
+                                        isSuperior = !isSuperior; // Toggle the value
+                                        applyToError = null; // Clear the error message when interacting
                                       });
-                                      // Validate all fields when user selects/deselects
                                     },
-                                    side: BorderSide(
-                                      color: Colors.grey.shade500,
-                                      width: 1,
+                                    child: Container(
+                                      color: Colors.white,
+                                      child: Checkbox(
+                                        value: isSuperior,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isSuperior = newValue ?? false;
+                                            applyToError = null; // Clear the error message
+                                          });
+                                        },
+                                        side: BorderSide(
+                                          color: Colors.grey.shade500,
+                                          width: 1,
+                                        ),
+                                        activeColor: Colors.blue,
+                                        checkColor: Colors.white,
+                                      ),
                                     ),
-                                    activeColor: Colors.blue,
-                                    checkColor: Colors.white,
                                   ),
                                 ),
                               ],
@@ -2226,7 +2287,13 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                                         style: TextStyle(fontSize: 14), // Adjust text size within the TextField
                                         maxLines: null, // Allows the TextField to expand vertically
                                         expands: true, // Allows the TextField content to fill the available space
-                                        textAlignVertical: TextAlignVertical.top, // Centers text vertically
+                                        textAlignVertical: TextAlignVertical.top,
+                                        onChanged: (text) {
+                                          // Clear the error message when the user types in the TextField
+                                          setState(() {
+                                            reasonError = null;
+                                          });
+                                        },
                                         decoration: InputDecoration(
                                           hintText: 'Text Here',
                                           border: InputBorder.none,

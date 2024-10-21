@@ -37,6 +37,7 @@ import 'SampleTest1.dart';
 import 'TerminationWorkInfo.dart';
 import 'TicketRequest.dart';
 import 'User.dart';
+import 'WPTracking.dart';
 
 export 'EducationDetails.dart';
 export 'EmployeeNonLocalAcco.dart';
@@ -55,12 +56,13 @@ export 'SampleTest1.dart';
 export 'TerminationWorkInfo.dart';
 export 'TicketRequest.dart';
 export 'User.dart';
+export 'WPTracking.dart';
 
 class ModelProvider implements amplify_core.ModelProviderInterface {
   @override
-  String version = "d1f17d81c9851fa38ccf78d659c2b4a6";
+  String version = "3a4bd7eec3ce2175d8057542070e4f4a";
   @override
-  List<amplify_core.ModelSchema> modelSchemas = [EducationDetails.schema, EmployeeNonLocalAcco.schema, EmployeePersonalDoc.schema, EmployeePersonalInfo.schema, EmployeeWorkInfo.schema, InterviewScheduleSchema.schema, LabourDependentPass.schema, LabourMedicalInfo.schema, LabourWorkPass.schema, LeaveStatus.schema, LeaveWorkInfo.schema, LocalMobilization.schema, PersonalDetails.schema, SampleTest1.schema, TerminationWorkInfo.schema, TicketRequest.schema, User.schema];
+  List<amplify_core.ModelSchema> modelSchemas = [EducationDetails.schema, EmployeeNonLocalAcco.schema, EmployeePersonalDoc.schema, EmployeePersonalInfo.schema, EmployeeWorkInfo.schema, InterviewScheduleSchema.schema, LabourDependentPass.schema, LabourMedicalInfo.schema, LabourWorkPass.schema, LeaveStatus.schema, LeaveWorkInfo.schema, LocalMobilization.schema, PersonalDetails.schema, SampleTest1.schema, TerminationWorkInfo.schema, TicketRequest.schema, User.schema, WPTracking.schema];
   @override
   List<amplify_core.ModelSchema> customTypeSchemas = [];
   static final ModelProvider _instance = ModelProvider();
@@ -103,6 +105,8 @@ class ModelProvider implements amplify_core.ModelProviderInterface {
         return TicketRequest.classType;
       case "User":
         return User.classType;
+      case "WPTracking":
+        return WPTracking.classType;
       default:
         throw Exception("Failed to find model in model provider for model name: " + modelName);
     }

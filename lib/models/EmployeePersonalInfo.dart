@@ -220,7 +220,7 @@ class EmployeePersonalInfo extends amplify_core.Model {
   
   const EmployeePersonalInfo._internal({required this.id, required empID, required name, required gender, required dateOfBirth, required email, required nationality, otherNationality, required religion, required marital, required race, bruneiIcNo, bruneiIcColour, bruneiIcExpiry, malaysianIcNumber, malaysianIcExpiry, EmployeePersonalDoc, createdAt, updatedAt, employeePersonalInfoEmployeePersonalDocId}): _empID = empID, _name = name, _gender = gender, _dateOfBirth = dateOfBirth, _email = email, _nationality = nationality, _otherNationality = otherNationality, _religion = religion, _marital = marital, _race = race, _bruneiIcNo = bruneiIcNo, _bruneiIcColour = bruneiIcColour, _bruneiIcExpiry = bruneiIcExpiry, _malaysianIcNumber = malaysianIcNumber, _malaysianIcExpiry = malaysianIcExpiry, _EmployeePersonalDoc = EmployeePersonalDoc, _createdAt = createdAt, _updatedAt = updatedAt, _employeePersonalInfoEmployeePersonalDocId = employeePersonalInfoEmployeePersonalDocId;
   
-  factory EmployeePersonalInfo({String? id, required String empID, required String name, required String gender, required String dateOfBirth, required String email, required String nationality, String? otherNationality, required String religion, required String marital, required String race, String? bruneiIcNo, String? bruneiIcColour, String? bruneiIcExpiry, String? malaysianIcNumber, String? malaysianIcExpiry,awe_epd.EmployeePersonalDoc? EmployeePersonalDoc, String? employeePersonalInfoEmployeePersonalDocId}) {
+  factory EmployeePersonalInfo({String? id, required String empID, required String name, required String gender, required String dateOfBirth, required String email, required String nationality, String? otherNationality, required String religion, required String marital, required String race, String? bruneiIcNo, String? bruneiIcColour, String? bruneiIcExpiry, String? malaysianIcNumber, String? malaysianIcExpiry, awe_epd.EmployeePersonalDoc? EmployeePersonalDoc, String? employeePersonalInfoEmployeePersonalDocId}) {
     return EmployeePersonalInfo._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
       empID: empID,
@@ -302,7 +302,7 @@ class EmployeePersonalInfo extends amplify_core.Model {
     return buffer.toString();
   }
   
-  EmployeePersonalInfo copyWith({String? empID, String? name, String? gender, String? dateOfBirth, String? email, String? nationality, String? otherNationality, String? religion, String? marital, String? race, String? bruneiIcNo, String? bruneiIcColour, String? bruneiIcExpiry, String? malaysianIcNumber, String? malaysianIcExpiry,awe_epd.EmployeePersonalDoc? EmployeePersonalDoc, String? employeePersonalInfoEmployeePersonalDocId}) {
+  EmployeePersonalInfo copyWith({String? empID, String? name, String? gender, String? dateOfBirth, String? email, String? nationality, String? otherNationality, String? religion, String? marital, String? race, String? bruneiIcNo, String? bruneiIcColour, String? bruneiIcExpiry, String? malaysianIcNumber, String? malaysianIcExpiry, awe_epd.EmployeePersonalDoc? EmployeePersonalDoc, String? employeePersonalInfoEmployeePersonalDocId}) {
     return EmployeePersonalInfo._internal(
       id: id,
       empID: empID ?? this.empID,
@@ -385,7 +385,7 @@ class EmployeePersonalInfo extends amplify_core.Model {
       _EmployeePersonalDoc = json['EmployeePersonalDoc'] != null
         ? json['EmployeePersonalDoc']['serializedData'] != null
           ? awe_epd.EmployeePersonalDoc.fromJson(new Map<String, dynamic>.from(json['EmployeePersonalDoc']['serializedData']))
-          :awe_epd.EmployeePersonalDoc.fromJson(new Map<String, dynamic>.from(json['EmployeePersonalDoc']))
+          : awe_epd.EmployeePersonalDoc.fromJson(new Map<String, dynamic>.from(json['EmployeePersonalDoc']))
         : null,
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null,
@@ -550,7 +550,7 @@ class EmployeePersonalInfo extends amplify_core.Model {
       key: EmployeePersonalInfo.EMPLOYEEPERSONALDOC,
       isRequired: false,
       ofModelName: 'EmployeePersonalDoc',
-      associatedKey:awe_epd.EmployeePersonalDoc.ID
+      associatedKey: awe_epd.EmployeePersonalDoc.ID
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
