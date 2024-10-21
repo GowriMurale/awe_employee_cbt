@@ -1963,7 +1963,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(width:size.width *  0.050,),
                       Text('Dept/Div',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                       SizedBox(width:size.width *  0.044,),
-                      Text('50598',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      Text('welding',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                     ],
                   ),
                   SizedBox(height: size.height * 0.014,),
@@ -1982,8 +1982,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     children: [
                       SizedBox(width:size.width *  0.050,),
                       Text('Destination',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
-                      SizedBox(width:size.width *  0.032,),
-                      Text( 'Singapore',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      SizedBox(width:size.width *  0.031,),
+                      Text( request?.destination ?? 'Unknown',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                     ],
                   ),
                   SizedBox(height: size.height * 0.014,),
@@ -1992,8 +1992,10 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     children: [
                       SizedBox(width:size.width *  0.050,),
                       Text('Departure Date',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
-                      SizedBox(width:size.width *  0.016,),
-                      Text('16/10/2024',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black),),
+                      SizedBox(width:size.width *  0.015,),
+                      Text(request?.departureDate != null
+                          ? DateFormat('dd/MM/yyyy').format(request!.departureDate!.getDateTime())
+                          : 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black),),
                     ],
                   ),
                   SizedBox(height: size.height * 0.014,),
@@ -2002,8 +2004,10 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     children: [
                       SizedBox(width:size.width *  0.050,),
                       Text('Arrival Date',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
-                      SizedBox(width:size.width *  0.033,),
-                      Text( '19/10/2024',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      SizedBox(width:size.width *  0.032,),
+                      Text(request!.arrivalDate != null
+                          ? DateFormat('dd/MM/yyyy').format(request.arrivalDate!.getDateTime())
+                          : 'N/A' ,style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                     ],
                   ),
                   SizedBox(height: size.height * 0.024),
@@ -2440,7 +2444,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   Future<void> updateLeaveStatus(String leaveId, String newStatus) async {
     try {
       final request = ModelMutations.update<LeaveStatus>(LeaveStatus.classType as LeaveStatus , apiName: leaveId, headers: {
-        'empStatus': newStatus,
+       'empStatus': newStatus,
       });
       final response = await Amplify.API.mutate(request: request).response;
 
@@ -2504,7 +2508,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     children: [
                       SizedBox(width:size.width *  0.050,),
                       Text('Name',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
-                      SizedBox(width:size.width *  0.058,),
+                      SizedBox(width:size.width *  0.060,),
                       Text('Rahul Kumar',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                     ],
                   ),
@@ -2514,7 +2518,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     children: [
                       SizedBox(width:size.width *  0.050,),
                       Text('Job Title',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
-                      SizedBox(width:size.width *  0.045,),
+                      SizedBox(width:size.width *  0.047,),
                       Text('Trainer',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                     ],
                   ),
@@ -2524,7 +2528,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     children: [
                       SizedBox(width:size.width *  0.050,),
                       Text('Badge',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
-                      SizedBox(width:size.width *  0.057,),
+                      SizedBox(width:size.width *  0.058,),
                       Text('50598',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                     ],
                   ),
@@ -2534,7 +2538,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     children: [
                       SizedBox(width:size.width *  0.050,),
                       Text('Dept/Div',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
-                      SizedBox(width:size.width *  0.048,),
+                      SizedBox(width:size.width *  0.046,),
                       Text('5058',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                     ],
                   ),
@@ -3634,7 +3638,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
           child: DataTable(
             headingRowHeight: filteredLeaveData.isEmpty ? 0 : size.height * 0.050,
             dataRowHeight: size.height * 0.048,
-            columnSpacing: size.width * 0.047,
+            columnSpacing: size.width * 0.043,
             columns: [
               DataColumn(label: Text('Leave Type', style: headerTextStyle)),
               DataColumn(label: Text('From', style: headerTextStyle)),
@@ -4171,7 +4175,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                 height: size.height * 0.03,
                 onPressed: () {
                   print(leave);
-                  // deleteLeave(emp); // Delete leave from AWS DynamoDB
+
                   Navigator.of(context).pop();
                 },
                 child: Text(
@@ -4456,7 +4460,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                           ],
                         ),
                       ),
-                      SizedBox(width: size.width * 0.215),
+                      SizedBox(width: size.width * 0.212),
                       Container(
                         width: size.width * 0.078,
                         height: size.height * 0.034,
@@ -4474,6 +4478,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                               hintText: 'From',
                               hintStyle: TextStyle(fontSize: 12),
                               suffixIcon: IconButton(
+                                padding: EdgeInsets.only(bottom: 0.8),
                                 onPressed: () => _selectDate(context, from, isFromField: true), // Call with isFromField = true
                                 icon: Icon(Icons.calendar_month, size: 15, color: Colors.black),
                               ),
@@ -4503,6 +4508,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                               hintText: 'To',
                               hintStyle: TextStyle(fontSize: 12),
                               suffixIcon: IconButton(
+                                padding: EdgeInsets.only(bottom: 0.8),
                                 onPressed: () => _selectDate(context, to), // Call without isFromField
                                 icon: Icon(Icons.calendar_month, size: 15, color: Colors.black),
                               ),
