@@ -22,22 +22,26 @@ import 'models/ModelProvider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Amplify
+  // Initialize Amplify and GetStorage
   await _configureAmplify();
   await GetStorage.init();
-  runApp(MyApp());
+
+  // Check if user is already logged in before launching the app
+  bool isLoggedIn = await _checkUserSession();
+
+  runApp(MyApp(isLoggedIn: isLoggedIn));
 }
 
 Future<void> _configureAmplify() async {
   try {
-    // final datastorePlugin = AmplifyDataStore(modelProvider: ModelProvider.instance);
+    // Add Amplify plugins
     final authPlugin = AmplifyAuthCognito();
     final storagePlugin = AmplifyStorageS3();
     final apiPlugin = AmplifyAPI(
       options: APIPluginOptions(modelProvider: ModelProvider.instance),
     );
 
-    await Amplify.addPlugins([ authPlugin, storagePlugin, apiPlugin]);
+    await Amplify.addPlugins([authPlugin, storagePlugin, apiPlugin]);
     await Amplify.configure(amplifyconfig);
     print('Successfully configured Amplify');
   } catch (e) {
@@ -45,25 +49,41 @@ Future<void> _configureAmplify() async {
   }
 }
 
+Future<bool> _checkUserSession() async {
+  final box = GetStorage();
+  bool isLoggedIn = box.read('isLoggedIn') ?? false;
 
+  try {
+    // Fetch session status
+    var session = await Amplify.Auth.fetchAuthSession();
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
+    if (session.isSignedIn && isLoggedIn) {
+      return true;  // User is signed in
+    } else {
+      return false;  // User is not signed in
+    }
+  } catch (e) {
+    print('Error fetching session: $e');
+    return false;  // Fallback to not signed in
+  }
 }
 
+// MyApp Class
+class MyApp extends StatelessWidget {
+  final bool isLoggedIn;
 
-//tab view
-//amplify config
-class _MyAppState extends State<MyApp> {
+  MyApp({required this.isLoggedIn});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      // Navigate to either Dashboard or Login depending on session state
+      home: isLoggedIn ? DashBoardScreeen() : LoginScreen(),
     );
   }
 }
+
 
 
 

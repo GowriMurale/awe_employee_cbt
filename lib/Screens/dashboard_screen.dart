@@ -975,6 +975,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                            onPressed: () async {
 
                                             await applyTicketRequest(departure.text, arrival.text, destination.text, remarks.text);
+                                            Navigator.of(context).pop();
 
                                              // Call your apply function here with the provided input
                                            },
@@ -1659,6 +1660,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     workPosition = box.read('workPosition') ?? 'Work Position not found';
     fetchLeaveData();  // Assuming you have a method to fetch leave data
     fetchTicketRequests();
+    _checkSession();
   }
 
   @override
@@ -1666,6 +1668,22 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     from.dispose();
     to.dispose();
     super.dispose();
+  }
+
+  Future<void> _checkSession() async {
+    bool isLoggedIn = box.read('isLoggedIn') ?? false;
+
+    try {
+      var session = await Amplify.Auth.fetchAuthSession();
+
+      if (!session.isSignedIn || !isLoggedIn) {
+        // If session is not signed in, redirect to login screen
+        Get.off(() => LoginScreen());
+      }
+    } catch (e) {
+      print('Error fetching session: $e');
+      Get.off(() => LoginScreen()); // Fallback to login screen in case of error
+    }
   }
 
   DateTime? selectedFromDate; // Variable to hold the selected date from the "From" field
@@ -3638,7 +3656,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
           child: DataTable(
             headingRowHeight: filteredLeaveData.isEmpty ? 0 : size.height * 0.050,
             dataRowHeight: size.height * 0.048,
-            columnSpacing: size.width * 0.043,
+            columnSpacing: size.width * 0.042,
             columns: [
               DataColumn(label: Text('Leave Type', style: headerTextStyle)),
               DataColumn(label: Text('From', style: headerTextStyle)),
@@ -3676,7 +3694,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   )),
                   DataCell(GestureDetector(
                     onTap: (){
-                        _pendingDialog(context, index, leave);
+                        //_pendingDialog(context, index, leave);
                     },
                       child: Text(leave?.empStatus?.toString() ?? 'Pending', style: rowTextStyle))),
                 ],
@@ -3757,7 +3775,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                 DataCell(
                   GestureDetector(
                     onTap: (){
-                      _ticketpendingDialog(context, index, request);
+                      //_ticketpendingDialog(context, index, request);
                     },
                     child: Text(
                       request?.hrStatus ?? 'Pending',  // Show status text (default to 'Pending' if null)
@@ -4460,7 +4478,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                           ],
                         ),
                       ),
-                      SizedBox(width: size.width * 0.212),
+                      SizedBox(width: size.width * 0.202),
                       Container(
                         width: size.width * 0.078,
                         height: size.height * 0.034,
