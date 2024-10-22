@@ -41,39 +41,35 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _signIn(BuildContext context) async {
     try {
       var session = await Amplify.Auth.fetchAuthSession();
+      print('Current session: $session');
 
-      // Check if user is already signed in
       if (session.isSignedIn) {
         String userId = await Amplify.Auth.getCurrentUser().then((user) => user.userId);
-        print(userId);
-        // storeUserData(userId); // Store user ID locally
-
-        // Navigate to dashboard
+        print('User already signed in: $userId');
         Get.off(() => DashBoardScreeen());
         return;
       }
 
-      // Sign in the user
       SignInResult res = await Amplify.Auth.signIn(
         username: userIdController.text.trim(),
         password: passwordController.text.trim(),
       );
 
       if (res.isSignedIn) {
-        String empId = userIdController.text.trim(); // Use the value from userIdController
-        print(empId);
-        storeUserData(empId); // Store user ID locally
-
-        // Fetch employee personal info after successful sign in
-        // await fetchEmployeePersonalInfo(context);
-
-        // Navigate to dashboard
+        print('Sign in successful for user: ${userIdController.text.trim()}');
         Get.off(() => DashBoardScreeen());
+      } else {
+        print('Sign in failed: ${res.isSignedIn}');
       }
     } on AuthException catch (e) {
-      _showErrorDialog(context, e.message); // Show error dialog if sign-in fails
+      print('Authentication error: ${e.message}');
+      _showErrorDialog(context, e.message);
+    } catch (e) {
+      print('Unexpected error: $e');
     }
   }
+
+
 
 
   // Future<void> fetchEmployeePersonalInfo(BuildContext context) async {

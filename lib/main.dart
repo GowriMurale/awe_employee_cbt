@@ -50,18 +50,12 @@ Future<void> _configureAmplify() async {
 }
 
 Future<bool> _checkUserSession() async {
-  final box = GetStorage();
-  bool isLoggedIn = box.read('isLoggedIn') ?? false;
-
   try {
     // Fetch session status
     var session = await Amplify.Auth.fetchAuthSession();
 
-    if (session.isSignedIn && isLoggedIn) {
-      return true;  // User is signed in
-    } else {
-      return false;  // User is not signed in
-    }
+    // Return true only if the session is signed in
+    return session.isSignedIn;
   } catch (e) {
     print('Error fetching session: $e');
     return false;  // Fallback to not signed in

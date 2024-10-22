@@ -85,7 +85,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
             child: Text('Yes'),
             onPressed: () async {
               Navigator.of(ctx).pop(); // Close the dialog before signing out
-              await _signOut(context); // Call the sign out method
+              await _signOut(); // Call the sign out method
             },
           ),
         ],
@@ -93,14 +93,21 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     );
   }
 
-  Future<void> _signOut(BuildContext context) async {
+  Future<void> _signOut() async {
     try {
       await Amplify.Auth.signOut();
-      Get.offAll(() => LoginScreen()); // Redirect to login screen
-    } on AuthException catch (e) {
-      _showErrorDialog(context, e.message);
+
+      // Clear user data from GetStorage
+      GetStorage().remove('userId');
+      GetStorage().remove('isLoggedIn');
+
+      // Navigate to login screen
+      Get.off(() => LoginScreen());
+    } catch (e) {
+      print('Error logging out: $e');
     }
   }
+
 
   void _showErrorDialog(BuildContext context, String message) {
     showDialog(
@@ -578,10 +585,17 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
         title: 'Success',
         content: Text('Ticket request submitted successfully.'),
         confirmTextColor: Colors.white,
-        onConfirm: () {
-          // Clear the fields or take other actions as needed
-          // For example, you might want to reset the input fields here.
-          Get.back(); // Close the dialog
+        onConfirm: () async {
+          // Clear input fields
+          departure.clear();
+          arrival.clear();
+          destination.clear();
+          remarks.clear();
+          // Fetch the updated ticket requests
+          await fetchTicketRequests(); // Call to fetch the new data
+
+          // Close the success dialog
+          Get.back();
         },
       );
     }
@@ -963,7 +977,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                    builder: (BuildContext context) {
                                      return AlertDialog(
                                        title: Text('Confirm Submission'),
-                                       content: Text('Are you sure you want to apply?'),
+                                       content: Text('Are you sure you want to apply for the ticket?'),
                                        actions: [
                                          TextButton(
                                            onPressed: () {
@@ -973,11 +987,31 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                          ),
                                          TextButton(
                                            onPressed: () async {
-
-                                            await applyTicketRequest(departure.text, arrival.text, destination.text, remarks.text);
-                                            Navigator.of(context).pop();
+                                             // Dismiss the confirmation dialog
+                                             Navigator.of(context).pop();
 
                                              // Call your apply function here with the provided input
+                                             await applyTicketRequest(departure.text, arrival.text, destination.text, remarks.text);
+
+                                             // After successfully applying, show success confirmation dialog
+                                             Get.defaultDialog(
+                                               title: 'Success',
+                                               content: Text('Ticket request submitted successfully.'),
+                                               confirmTextColor: Colors.white,
+                                               onConfirm: () {
+                                                 // Clear input fields
+                                                 departure.clear();
+                                                 arrival.clear();
+                                                 destination.clear();
+                                                 remarks.clear();
+
+                                                 // Close the success dialog
+                                                 Get.back(); // Close the success dialog
+
+                                                 // Optionally pop the previous screen
+                                                 Navigator.of(context).pop();
+                                               },
+                                             );
                                            },
                                            child: Text('Yes', style: TextStyle(color: Colors.green)),
                                          ),
@@ -987,9 +1021,19 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                  );
                                }
                              },
-                             child: Text('Apply', style: TextStyle(fontSize: 14, color:black,fontWeight: FontWeight.bold, fontFamily: 'Inter')),
+                             child: Text(
+                               'Apply',
+                               style: TextStyle(
+                                 fontSize: 14,
+                                 color: black,
+                                 fontWeight: FontWeight.bold,
+                                 fontFamily: 'Inter',
+                               ),
+                             ),
                              color: Colors.yellow,
                            ),
+
+
                          ],
                        ),
                      ],
@@ -1660,7 +1704,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     workPosition = box.read('workPosition') ?? 'Work Position not found';
     fetchLeaveData();  // Assuming you have a method to fetch leave data
     fetchTicketRequests();
-    _checkSession();
+    _checkUserSession();
+
   }
 
   @override
@@ -1670,19 +1715,11 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     super.dispose();
   }
 
-  Future<void> _checkSession() async {
-    bool isLoggedIn = box.read('isLoggedIn') ?? false;
-
-    try {
-      var session = await Amplify.Auth.fetchAuthSession();
-
-      if (!session.isSignedIn || !isLoggedIn) {
-        // If session is not signed in, redirect to login screen
-        Get.off(() => LoginScreen());
-      }
-    } catch (e) {
-      print('Error fetching session: $e');
-      Get.off(() => LoginScreen()); // Fallback to login screen in case of error
+  Future<void> _checkUserSession() async {
+    var session = await Amplify.Auth.fetchAuthSession();
+    if (!session.isSignedIn) {
+      // Navigate to login screen if not signed in
+      Get.off(() => LoginScreen());
     }
   }
 
@@ -3476,7 +3513,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     );
   }
 
-  void _approvedDialog(BuildContext context, int rowIndex, LeaveStatus leave, Function(String) onStatusChanged) {
+  void _approvedDialog(BuildContext context, int rowIndex, LeaveStatus leave,) {
     final Size size = MediaQuery.of(context).size;
     Get.dialog(
       Dialog(
@@ -3609,7 +3646,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     minWidth: size.width * 0.062,
                     height: size.height * 0.050,
                     onPressed: () {
-                      _showCancelConfirmation(context, onStatusChanged);
+
                     },
                     child: Text(
                       'Cancel',
@@ -3627,6 +3664,28 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       ),
       barrierDismissible: false,
     );
+  }
+
+  void _showLeaveDialog(BuildContext context, int index, LeaveStatus leave) {
+    // Show the appropriate dialog based on leave status
+    if (leave.empStatus == 'Approved') {
+      _approvedDialog(context, index, leave);
+    } else if (leave.empStatus == 'Rejected') {
+      _rejectedDialog(context, index, leave);
+    } else {
+      _pendingDialog(context, index, leave);
+    }
+  }
+
+  void _showTicketDialog(BuildContext context, int index, TicketRequest request) {
+    // Show the appropriate dialog based on leave status
+    if (request.hrStatus == 'Approved') {
+      _ticketapprovedDialog(context, index, request);
+    } else if (request.hrStatus == 'Rejected') {
+      _ticketrejectedDialog(context, index, request);
+    } else {
+      _ticketpendingDialog(context, index, request);
+    }
   }
 
   bool isRecentLeaveSelected = true; // Tracks the selected tab
@@ -3667,36 +3726,66 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               DataColumn(label: Text('Status', style: headerTextStyle)),
             ],
             rows: filteredLeaveData.map((leave) {
-              int index = filteredLeaveData.indexOf(leave);
-
+              int index=filteredLeaveData.indexOf(leave);
               return DataRow(
                 cells: [
-                  DataCell(Text(leave!.leaveType ?? '', style: rowTextStyle)),
-                  DataCell(Text(
-                    leave.fromDate != null
-                        ? DateFormat('dd/MM/yyyy').format(leave.fromDate!.getDateTime())
-                        : '',
-                    style: rowTextStyle,
-                  )),
-                  DataCell(Text(
-                    leave.toDate != null
-                        ? DateFormat('dd/MM/yyyy').format(leave.toDate!.getDateTime())
-                        : '',
-                    style: rowTextStyle,
-                  )),
-                  DataCell(Text('${leave.days ?? 0} days', style: rowTextStyle)),
-                  DataCell(Text(leave.reason ?? '', style: rowTextStyle)),
-                  DataCell(Text(
-                    leave.applyTo != null && leave.applyTo is List
-                        ? (leave.applyTo as List).join(', ')
-                        : leave.applyTo?.toString() ?? '',
-                    style: rowTextStyle,
-                  )),
-                  DataCell(GestureDetector(
-                    onTap: (){
-                        //_pendingDialog(context, index, leave);
+                  DataCell(
+                    Text(leave!.leaveType ?? '', style: rowTextStyle),
+                    onTap: () {
+                      _showLeaveDialog(context, index, leave); // Method to handle tap
                     },
-                      child: Text(leave?.empStatus?.toString() ?? 'Pending', style: rowTextStyle))),
+                  ),
+                  DataCell(
+                    Text(
+                      leave.fromDate != null
+                          ? DateFormat('dd/MM/yyyy').format(leave.fromDate!.getDateTime())
+                          : '',
+                      style: rowTextStyle,
+                    ),
+                    onTap: () {
+                      _showLeaveDialog(context, index, leave);
+                    },
+                  ),
+                  DataCell(
+                    Text(
+                      leave.toDate != null
+                          ? DateFormat('dd/MM/yyyy').format(leave.toDate!.getDateTime())
+                          : '',
+                      style: rowTextStyle,
+                    ),
+                    onTap: () {
+                      _showLeaveDialog(context, index, leave);
+                    },
+                  ),
+                  DataCell(
+                    Text('${leave.days ?? 0} days', style: rowTextStyle),
+                    onTap: () {
+                      _pendingDialog(context, index, leave);
+                    },
+                  ),
+                  DataCell(
+                    Text(leave.reason ?? '', style: rowTextStyle),
+                    onTap: () {
+                      _showLeaveDialog(context, index, leave);
+                    },
+                  ),
+                  DataCell(
+                    Text(
+                      leave.applyTo != null && leave.applyTo is List
+                          ? (leave.applyTo as List).join(', ')
+                          : leave.applyTo?.toString() ?? '',
+                      style: rowTextStyle,
+                    ),
+                    onTap: () {
+                      _showLeaveDialog(context, index, leave);
+                    },
+                  ),
+                  DataCell(
+                    Text(leave?.empStatus?.toString() ?? 'Pending', style: rowTextStyle),
+                    onTap: () {
+                      _showLeaveDialog(context, index, leave);
+                    },
+                  ),
                 ],
               );
             }).toList(),
@@ -3706,6 +3795,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       ),
     );
   }
+
+
   void _ticketCancelConfirmation(BuildContext context, Function onStatusChanged) {
     Get.dialog(
       AlertDialog(
@@ -3760,28 +3851,53 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
             rows: filteredTicketRequests.map((request) {
               int index = filteredTicketRequests.indexOf(request);
               return DataRow(cells: [
-                DataCell(Text('Rahul', style: rowTextStyle)), // Static Name
-                DataCell(Text('50598', style: rowTextStyle)), // Static Badge Number
-                DataCell(Text('Welding', style: rowTextStyle)), // Static Department
-                DataCell(Text('Trainer', style: rowTextStyle)), // Static Position
-                DataCell(Text(request?.destination ?? 'Unknown', style: rowTextStyle)), // Dynamic Destination
+                DataCell(Text('Rahul', style: rowTextStyle),
+                    onTap: (){
+                    _showTicketDialog(context, index, request!);
+                    }), // Static Name
+                DataCell(Text('50598', style: rowTextStyle),
+                    onTap: (){
+                  _showTicketDialog(context, index, request!);
+                    }
+                ), // Static Badge Number
+                DataCell(Text('Welding', style: rowTextStyle),
+                  onTap: (){
+                    _showTicketDialog(context, index, request!);
+                  }
+                ), // Static Department
+                DataCell(Text('Trainer', style: rowTextStyle),
+                  onTap: (){
+                    _showTicketDialog(context, index, request!);
+                  }
+                ), // Static Position
+                DataCell(Text(request?.destination ?? 'Unknown', style: rowTextStyle),
+                  onTap: (){
+                    _showTicketDialog(context, index, request!);
+                  }
+                ), // Dynamic Destination
                 DataCell(Text(request?.departureDate != null
                     ? DateFormat('dd/MM/yyyy').format(request!.departureDate!.getDateTime())
-                    : 'N/A', style: rowTextStyle)), // Dynamic Departure Date
+                    : 'N/A', style: rowTextStyle),
+                  onTap: (){
+                    _showTicketDialog(context, index, request!);
+                  }
+                ), // Dynamic Departure Date
                 DataCell(Text(request!.arrivalDate != null
                     ? DateFormat('dd/MM/yyyy').format(request.arrivalDate!.getDateTime())
-                    : 'N/A', style: rowTextStyle)),
+                    : 'N/A', style: rowTextStyle),
+                  onTap: (){
+                    _showTicketDialog(context, index, request!);
+                  }
+                ),
                 // Dynamic Arrival Date
                 DataCell(
-                  GestureDetector(
-                    onTap: (){
-                      //_ticketpendingDialog(context, index, request);
-                    },
-                    child: Text(
-                      request?.hrStatus ?? 'Pending',  // Show status text (default to 'Pending' if null)
-                      style: rowTextStyle,
-                    ),
+                  Text(
+                    request?.hrStatus ?? 'Pending',  // Show status text (default to 'Pending' if null)
+                    style: rowTextStyle,
                   ),
+                  onTap: (){
+                    _showTicketDialog(context, index, request!);
+                  }
                 )
 
               ]);
