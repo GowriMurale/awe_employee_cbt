@@ -27,19 +27,19 @@ import 'package:amplify_core/amplify_core.dart' as amplify_core;
 class LabourDependentPass extends amplify_core.Model {
   static const classType = const _LabourDependentPassModelType();
   final String id;
-  final String? _passportLocation;
-  final String? _reEntryVisaApplication;
-  final String? _immigrationApprovalDate;
-  final String? _reEntryVisaExpiry;
+  final String? _empID;
   final String? _airTicketStatus;
   final String? _dependentName;
   final String? _dependentPassportNumber;
   final String? _dependentPassportExpiy;
-  final String? _relation;
   final String? _labourDepositPaidBy;
   final String? _labourDepositReceiptNumber;
   final String? _labourDepositAmount;
-  final String? _empID;
+  final String? _passportLocation;
+  final String? _reEntryVisaApplication;
+  final String? _immigrationApprovalDate;
+  final String? _reEntryVisaExpiry;
+  final String? _relation;
   final amplify_core.TemporalDateTime? _createdAt;
   final amplify_core.TemporalDateTime? _updatedAt;
 
@@ -56,48 +56,9 @@ class LabourDependentPass extends amplify_core.Model {
       );
   }
   
-  String get passportLocation {
+  String get empID {
     try {
-      return _passportLocation!;
-    } catch(e) {
-      throw amplify_core.AmplifyCodeGenModelException(
-          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
-  String get reEntryVisaApplication {
-    try {
-      return _reEntryVisaApplication!;
-    } catch(e) {
-      throw amplify_core.AmplifyCodeGenModelException(
-          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
-  String get immigrationApprovalDate {
-    try {
-      return _immigrationApprovalDate!;
-    } catch(e) {
-      throw amplify_core.AmplifyCodeGenModelException(
-          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
-  String get reEntryVisaExpiry {
-    try {
-      return _reEntryVisaExpiry!;
+      return _empID!;
     } catch(e) {
       throw amplify_core.AmplifyCodeGenModelException(
           amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -160,19 +121,6 @@ class LabourDependentPass extends amplify_core.Model {
     }
   }
   
-  String get relation {
-    try {
-      return _relation!;
-    } catch(e) {
-      throw amplify_core.AmplifyCodeGenModelException(
-          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
   String get labourDepositPaidBy {
     try {
       return _labourDepositPaidBy!;
@@ -212,9 +160,61 @@ class LabourDependentPass extends amplify_core.Model {
     }
   }
   
-  String get empID {
+  String get passportLocation {
     try {
-      return _empID!;
+      return _passportLocation!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
+  String get reEntryVisaApplication {
+    try {
+      return _reEntryVisaApplication!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
+  String get immigrationApprovalDate {
+    try {
+      return _immigrationApprovalDate!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
+  String get reEntryVisaExpiry {
+    try {
+      return _reEntryVisaExpiry!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
+  String get relation {
+    try {
+      return _relation!;
     } catch(e) {
       throw amplify_core.AmplifyCodeGenModelException(
           amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -233,24 +233,24 @@ class LabourDependentPass extends amplify_core.Model {
     return _updatedAt;
   }
   
-  const LabourDependentPass._internal({required this.id, required passportLocation, required reEntryVisaApplication, required immigrationApprovalDate, required reEntryVisaExpiry, required airTicketStatus, required dependentName, required dependentPassportNumber, required dependentPassportExpiy, required relation, required labourDepositPaidBy, required labourDepositReceiptNumber, required labourDepositAmount, required empID, createdAt, updatedAt}): _passportLocation = passportLocation, _reEntryVisaApplication = reEntryVisaApplication, _immigrationApprovalDate = immigrationApprovalDate, _reEntryVisaExpiry = reEntryVisaExpiry, _airTicketStatus = airTicketStatus, _dependentName = dependentName, _dependentPassportNumber = dependentPassportNumber, _dependentPassportExpiy = dependentPassportExpiy, _relation = relation, _labourDepositPaidBy = labourDepositPaidBy, _labourDepositReceiptNumber = labourDepositReceiptNumber, _labourDepositAmount = labourDepositAmount, _empID = empID, _createdAt = createdAt, _updatedAt = updatedAt;
+  const LabourDependentPass._internal({required this.id, required empID, required airTicketStatus, required dependentName, required dependentPassportNumber, required dependentPassportExpiy, required labourDepositPaidBy, required labourDepositReceiptNumber, required labourDepositAmount, required passportLocation, required reEntryVisaApplication, required immigrationApprovalDate, required reEntryVisaExpiry, required relation, createdAt, updatedAt}): _empID = empID, _airTicketStatus = airTicketStatus, _dependentName = dependentName, _dependentPassportNumber = dependentPassportNumber, _dependentPassportExpiy = dependentPassportExpiy, _labourDepositPaidBy = labourDepositPaidBy, _labourDepositReceiptNumber = labourDepositReceiptNumber, _labourDepositAmount = labourDepositAmount, _passportLocation = passportLocation, _reEntryVisaApplication = reEntryVisaApplication, _immigrationApprovalDate = immigrationApprovalDate, _reEntryVisaExpiry = reEntryVisaExpiry, _relation = relation, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory LabourDependentPass({String? id, required String passportLocation, required String reEntryVisaApplication, required String immigrationApprovalDate, required String reEntryVisaExpiry, required String airTicketStatus, required String dependentName, required String dependentPassportNumber, required String dependentPassportExpiy, required String relation, required String labourDepositPaidBy, required String labourDepositReceiptNumber, required String labourDepositAmount, required String empID}) {
+  factory LabourDependentPass({String? id, required String empID, required String airTicketStatus, required String dependentName, required String dependentPassportNumber, required String dependentPassportExpiy, required String labourDepositPaidBy, required String labourDepositReceiptNumber, required String labourDepositAmount, required String passportLocation, required String reEntryVisaApplication, required String immigrationApprovalDate, required String reEntryVisaExpiry, required String relation}) {
     return LabourDependentPass._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
-      passportLocation: passportLocation,
-      reEntryVisaApplication: reEntryVisaApplication,
-      immigrationApprovalDate: immigrationApprovalDate,
-      reEntryVisaExpiry: reEntryVisaExpiry,
+      empID: empID,
       airTicketStatus: airTicketStatus,
       dependentName: dependentName,
       dependentPassportNumber: dependentPassportNumber,
       dependentPassportExpiy: dependentPassportExpiy,
-      relation: relation,
       labourDepositPaidBy: labourDepositPaidBy,
       labourDepositReceiptNumber: labourDepositReceiptNumber,
       labourDepositAmount: labourDepositAmount,
-      empID: empID);
+      passportLocation: passportLocation,
+      reEntryVisaApplication: reEntryVisaApplication,
+      immigrationApprovalDate: immigrationApprovalDate,
+      reEntryVisaExpiry: reEntryVisaExpiry,
+      relation: relation);
   }
   
   bool equals(Object other) {
@@ -262,19 +262,19 @@ class LabourDependentPass extends amplify_core.Model {
     if (identical(other, this)) return true;
     return other is LabourDependentPass &&
       id == other.id &&
-      _passportLocation == other._passportLocation &&
-      _reEntryVisaApplication == other._reEntryVisaApplication &&
-      _immigrationApprovalDate == other._immigrationApprovalDate &&
-      _reEntryVisaExpiry == other._reEntryVisaExpiry &&
+      _empID == other._empID &&
       _airTicketStatus == other._airTicketStatus &&
       _dependentName == other._dependentName &&
       _dependentPassportNumber == other._dependentPassportNumber &&
       _dependentPassportExpiy == other._dependentPassportExpiy &&
-      _relation == other._relation &&
       _labourDepositPaidBy == other._labourDepositPaidBy &&
       _labourDepositReceiptNumber == other._labourDepositReceiptNumber &&
       _labourDepositAmount == other._labourDepositAmount &&
-      _empID == other._empID;
+      _passportLocation == other._passportLocation &&
+      _reEntryVisaApplication == other._reEntryVisaApplication &&
+      _immigrationApprovalDate == other._immigrationApprovalDate &&
+      _reEntryVisaExpiry == other._reEntryVisaExpiry &&
+      _relation == other._relation;
   }
   
   @override
@@ -286,19 +286,19 @@ class LabourDependentPass extends amplify_core.Model {
     
     buffer.write("LabourDependentPass {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("passportLocation=" + "$_passportLocation" + ", ");
-    buffer.write("reEntryVisaApplication=" + "$_reEntryVisaApplication" + ", ");
-    buffer.write("immigrationApprovalDate=" + "$_immigrationApprovalDate" + ", ");
-    buffer.write("reEntryVisaExpiry=" + "$_reEntryVisaExpiry" + ", ");
+    buffer.write("empID=" + "$_empID" + ", ");
     buffer.write("airTicketStatus=" + "$_airTicketStatus" + ", ");
     buffer.write("dependentName=" + "$_dependentName" + ", ");
     buffer.write("dependentPassportNumber=" + "$_dependentPassportNumber" + ", ");
     buffer.write("dependentPassportExpiy=" + "$_dependentPassportExpiy" + ", ");
-    buffer.write("relation=" + "$_relation" + ", ");
     buffer.write("labourDepositPaidBy=" + "$_labourDepositPaidBy" + ", ");
     buffer.write("labourDepositReceiptNumber=" + "$_labourDepositReceiptNumber" + ", ");
     buffer.write("labourDepositAmount=" + "$_labourDepositAmount" + ", ");
-    buffer.write("empID=" + "$_empID" + ", ");
+    buffer.write("passportLocation=" + "$_passportLocation" + ", ");
+    buffer.write("reEntryVisaApplication=" + "$_reEntryVisaApplication" + ", ");
+    buffer.write("immigrationApprovalDate=" + "$_immigrationApprovalDate" + ", ");
+    buffer.write("reEntryVisaExpiry=" + "$_reEntryVisaExpiry" + ", ");
+    buffer.write("relation=" + "$_relation" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -306,113 +306,113 @@ class LabourDependentPass extends amplify_core.Model {
     return buffer.toString();
   }
   
-  LabourDependentPass copyWith({String? passportLocation, String? reEntryVisaApplication, String? immigrationApprovalDate, String? reEntryVisaExpiry, String? airTicketStatus, String? dependentName, String? dependentPassportNumber, String? dependentPassportExpiy, String? relation, String? labourDepositPaidBy, String? labourDepositReceiptNumber, String? labourDepositAmount, String? empID}) {
+  LabourDependentPass copyWith({String? empID, String? airTicketStatus, String? dependentName, String? dependentPassportNumber, String? dependentPassportExpiy, String? labourDepositPaidBy, String? labourDepositReceiptNumber, String? labourDepositAmount, String? passportLocation, String? reEntryVisaApplication, String? immigrationApprovalDate, String? reEntryVisaExpiry, String? relation}) {
     return LabourDependentPass._internal(
       id: id,
-      passportLocation: passportLocation ?? this.passportLocation,
-      reEntryVisaApplication: reEntryVisaApplication ?? this.reEntryVisaApplication,
-      immigrationApprovalDate: immigrationApprovalDate ?? this.immigrationApprovalDate,
-      reEntryVisaExpiry: reEntryVisaExpiry ?? this.reEntryVisaExpiry,
+      empID: empID ?? this.empID,
       airTicketStatus: airTicketStatus ?? this.airTicketStatus,
       dependentName: dependentName ?? this.dependentName,
       dependentPassportNumber: dependentPassportNumber ?? this.dependentPassportNumber,
       dependentPassportExpiy: dependentPassportExpiy ?? this.dependentPassportExpiy,
-      relation: relation ?? this.relation,
       labourDepositPaidBy: labourDepositPaidBy ?? this.labourDepositPaidBy,
       labourDepositReceiptNumber: labourDepositReceiptNumber ?? this.labourDepositReceiptNumber,
       labourDepositAmount: labourDepositAmount ?? this.labourDepositAmount,
-      empID: empID ?? this.empID);
+      passportLocation: passportLocation ?? this.passportLocation,
+      reEntryVisaApplication: reEntryVisaApplication ?? this.reEntryVisaApplication,
+      immigrationApprovalDate: immigrationApprovalDate ?? this.immigrationApprovalDate,
+      reEntryVisaExpiry: reEntryVisaExpiry ?? this.reEntryVisaExpiry,
+      relation: relation ?? this.relation);
   }
   
   LabourDependentPass copyWithModelFieldValues({
-    ModelFieldValue<String>? passportLocation,
-    ModelFieldValue<String>? reEntryVisaApplication,
-    ModelFieldValue<String>? immigrationApprovalDate,
-    ModelFieldValue<String>? reEntryVisaExpiry,
+    ModelFieldValue<String>? empID,
     ModelFieldValue<String>? airTicketStatus,
     ModelFieldValue<String>? dependentName,
     ModelFieldValue<String>? dependentPassportNumber,
     ModelFieldValue<String>? dependentPassportExpiy,
-    ModelFieldValue<String>? relation,
     ModelFieldValue<String>? labourDepositPaidBy,
     ModelFieldValue<String>? labourDepositReceiptNumber,
     ModelFieldValue<String>? labourDepositAmount,
-    ModelFieldValue<String>? empID
+    ModelFieldValue<String>? passportLocation,
+    ModelFieldValue<String>? reEntryVisaApplication,
+    ModelFieldValue<String>? immigrationApprovalDate,
+    ModelFieldValue<String>? reEntryVisaExpiry,
+    ModelFieldValue<String>? relation
   }) {
     return LabourDependentPass._internal(
       id: id,
-      passportLocation: passportLocation == null ? this.passportLocation : passportLocation.value,
-      reEntryVisaApplication: reEntryVisaApplication == null ? this.reEntryVisaApplication : reEntryVisaApplication.value,
-      immigrationApprovalDate: immigrationApprovalDate == null ? this.immigrationApprovalDate : immigrationApprovalDate.value,
-      reEntryVisaExpiry: reEntryVisaExpiry == null ? this.reEntryVisaExpiry : reEntryVisaExpiry.value,
+      empID: empID == null ? this.empID : empID.value,
       airTicketStatus: airTicketStatus == null ? this.airTicketStatus : airTicketStatus.value,
       dependentName: dependentName == null ? this.dependentName : dependentName.value,
       dependentPassportNumber: dependentPassportNumber == null ? this.dependentPassportNumber : dependentPassportNumber.value,
       dependentPassportExpiy: dependentPassportExpiy == null ? this.dependentPassportExpiy : dependentPassportExpiy.value,
-      relation: relation == null ? this.relation : relation.value,
       labourDepositPaidBy: labourDepositPaidBy == null ? this.labourDepositPaidBy : labourDepositPaidBy.value,
       labourDepositReceiptNumber: labourDepositReceiptNumber == null ? this.labourDepositReceiptNumber : labourDepositReceiptNumber.value,
       labourDepositAmount: labourDepositAmount == null ? this.labourDepositAmount : labourDepositAmount.value,
-      empID: empID == null ? this.empID : empID.value
+      passportLocation: passportLocation == null ? this.passportLocation : passportLocation.value,
+      reEntryVisaApplication: reEntryVisaApplication == null ? this.reEntryVisaApplication : reEntryVisaApplication.value,
+      immigrationApprovalDate: immigrationApprovalDate == null ? this.immigrationApprovalDate : immigrationApprovalDate.value,
+      reEntryVisaExpiry: reEntryVisaExpiry == null ? this.reEntryVisaExpiry : reEntryVisaExpiry.value,
+      relation: relation == null ? this.relation : relation.value
     );
   }
   
   LabourDependentPass.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
-      _passportLocation = json['passportLocation'],
-      _reEntryVisaApplication = json['reEntryVisaApplication'],
-      _immigrationApprovalDate = json['immigrationApprovalDate'],
-      _reEntryVisaExpiry = json['reEntryVisaExpiry'],
+      _empID = json['empID'],
       _airTicketStatus = json['airTicketStatus'],
       _dependentName = json['dependentName'],
       _dependentPassportNumber = json['dependentPassportNumber'],
       _dependentPassportExpiy = json['dependentPassportExpiy'],
-      _relation = json['relation'],
       _labourDepositPaidBy = json['labourDepositPaidBy'],
       _labourDepositReceiptNumber = json['labourDepositReceiptNumber'],
       _labourDepositAmount = json['labourDepositAmount'],
-      _empID = json['empID'],
+      _passportLocation = json['passportLocation'],
+      _reEntryVisaApplication = json['reEntryVisaApplication'],
+      _immigrationApprovalDate = json['immigrationApprovalDate'],
+      _reEntryVisaExpiry = json['reEntryVisaExpiry'],
+      _relation = json['relation'],
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'passportLocation': _passportLocation, 'reEntryVisaApplication': _reEntryVisaApplication, 'immigrationApprovalDate': _immigrationApprovalDate, 'reEntryVisaExpiry': _reEntryVisaExpiry, 'airTicketStatus': _airTicketStatus, 'dependentName': _dependentName, 'dependentPassportNumber': _dependentPassportNumber, 'dependentPassportExpiy': _dependentPassportExpiy, 'relation': _relation, 'labourDepositPaidBy': _labourDepositPaidBy, 'labourDepositReceiptNumber': _labourDepositReceiptNumber, 'labourDepositAmount': _labourDepositAmount, 'empID': _empID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'empID': _empID, 'airTicketStatus': _airTicketStatus, 'dependentName': _dependentName, 'dependentPassportNumber': _dependentPassportNumber, 'dependentPassportExpiy': _dependentPassportExpiy, 'labourDepositPaidBy': _labourDepositPaidBy, 'labourDepositReceiptNumber': _labourDepositReceiptNumber, 'labourDepositAmount': _labourDepositAmount, 'passportLocation': _passportLocation, 'reEntryVisaApplication': _reEntryVisaApplication, 'immigrationApprovalDate': _immigrationApprovalDate, 'reEntryVisaExpiry': _reEntryVisaExpiry, 'relation': _relation, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
     'id': id,
-    'passportLocation': _passportLocation,
-    'reEntryVisaApplication': _reEntryVisaApplication,
-    'immigrationApprovalDate': _immigrationApprovalDate,
-    'reEntryVisaExpiry': _reEntryVisaExpiry,
+    'empID': _empID,
     'airTicketStatus': _airTicketStatus,
     'dependentName': _dependentName,
     'dependentPassportNumber': _dependentPassportNumber,
     'dependentPassportExpiy': _dependentPassportExpiy,
-    'relation': _relation,
     'labourDepositPaidBy': _labourDepositPaidBy,
     'labourDepositReceiptNumber': _labourDepositReceiptNumber,
     'labourDepositAmount': _labourDepositAmount,
-    'empID': _empID,
+    'passportLocation': _passportLocation,
+    'reEntryVisaApplication': _reEntryVisaApplication,
+    'immigrationApprovalDate': _immigrationApprovalDate,
+    'reEntryVisaExpiry': _reEntryVisaExpiry,
+    'relation': _relation,
     'createdAt': _createdAt,
     'updatedAt': _updatedAt
   };
 
   static final amplify_core.QueryModelIdentifier<LabourDependentPassModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<LabourDependentPassModelIdentifier>();
   static final ID = amplify_core.QueryField(fieldName: "id");
-  static final PASSPORTLOCATION = amplify_core.QueryField(fieldName: "passportLocation");
-  static final REENTRYVISAAPPLICATION = amplify_core.QueryField(fieldName: "reEntryVisaApplication");
-  static final IMMIGRATIONAPPROVALDATE = amplify_core.QueryField(fieldName: "immigrationApprovalDate");
-  static final REENTRYVISAEXPIRY = amplify_core.QueryField(fieldName: "reEntryVisaExpiry");
+  static final EMPID = amplify_core.QueryField(fieldName: "empID");
   static final AIRTICKETSTATUS = amplify_core.QueryField(fieldName: "airTicketStatus");
   static final DEPENDENTNAME = amplify_core.QueryField(fieldName: "dependentName");
   static final DEPENDENTPASSPORTNUMBER = amplify_core.QueryField(fieldName: "dependentPassportNumber");
   static final DEPENDENTPASSPORTEXPIY = amplify_core.QueryField(fieldName: "dependentPassportExpiy");
-  static final RELATION = amplify_core.QueryField(fieldName: "relation");
   static final LABOURDEPOSITPAIDBY = amplify_core.QueryField(fieldName: "labourDepositPaidBy");
   static final LABOURDEPOSITRECEIPTNUMBER = amplify_core.QueryField(fieldName: "labourDepositReceiptNumber");
   static final LABOURDEPOSITAMOUNT = amplify_core.QueryField(fieldName: "labourDepositAmount");
-  static final EMPID = amplify_core.QueryField(fieldName: "empID");
+  static final PASSPORTLOCATION = amplify_core.QueryField(fieldName: "passportLocation");
+  static final REENTRYVISAAPPLICATION = amplify_core.QueryField(fieldName: "reEntryVisaApplication");
+  static final IMMIGRATIONAPPROVALDATE = amplify_core.QueryField(fieldName: "immigrationApprovalDate");
+  static final REENTRYVISAEXPIRY = amplify_core.QueryField(fieldName: "reEntryVisaExpiry");
+  static final RELATION = amplify_core.QueryField(fieldName: "relation");
   static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "LabourDependentPass";
     modelSchemaDefinition.pluralName = "LabourDependentPasses";
@@ -431,25 +431,7 @@ class LabourDependentPass extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: LabourDependentPass.PASSPORTLOCATION,
-      isRequired: true,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: LabourDependentPass.REENTRYVISAAPPLICATION,
-      isRequired: true,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: LabourDependentPass.IMMIGRATIONAPPROVALDATE,
-      isRequired: true,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: LabourDependentPass.REENTRYVISAEXPIRY,
+      key: LabourDependentPass.EMPID,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
@@ -479,12 +461,6 @@ class LabourDependentPass extends amplify_core.Model {
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: LabourDependentPass.RELATION,
-      isRequired: true,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: LabourDependentPass.LABOURDEPOSITPAIDBY,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
@@ -503,7 +479,31 @@ class LabourDependentPass extends amplify_core.Model {
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: LabourDependentPass.EMPID,
+      key: LabourDependentPass.PASSPORTLOCATION,
+      isRequired: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: LabourDependentPass.REENTRYVISAAPPLICATION,
+      isRequired: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: LabourDependentPass.IMMIGRATIONAPPROVALDATE,
+      isRequired: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: LabourDependentPass.REENTRYVISAEXPIRY,
+      isRequired: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: LabourDependentPass.RELATION,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));

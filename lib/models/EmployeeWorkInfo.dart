@@ -551,7 +551,7 @@ class EmployeeWorkInfo extends amplify_core.Model {
       _upgradeDate = json['upgradeDate'],
       _TerminationWorkInfo = json['TerminationWorkInfo'] != null
         ? json['TerminationWorkInfo']['serializedData'] != null
-          ? awe_twi.TerminationWorkInfo.fromJson(new Map<String, dynamic>.from(json['TerminationWorkInfo']['serializedData']))
+          ?awe_twi.TerminationWorkInfo.fromJson(new Map<String, dynamic>.from(json['TerminationWorkInfo']['serializedData']))
           : awe_twi.TerminationWorkInfo.fromJson(new Map<String, dynamic>.from(json['TerminationWorkInfo']))
         : null,
       _LeaveWorkInfo = json['LeaveWorkInfo'] != null

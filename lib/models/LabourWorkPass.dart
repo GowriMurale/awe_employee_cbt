@@ -322,7 +322,7 @@ class LabourWorkPass extends amplify_core.Model {
         : null,
       _LabourDependentPass = json['LabourDependentPass'] != null
         ? json['LabourDependentPass']['serializedData'] != null
-          ?awe_ldp.LabourDependentPass.fromJson(new Map<String, dynamic>.from(json['LabourDependentPass']['serializedData']))
+          ? awe_ldp.LabourDependentPass.fromJson(new Map<String, dynamic>.from(json['LabourDependentPass']['serializedData']))
           : awe_ldp.LabourDependentPass.fromJson(new Map<String, dynamic>.from(json['LabourDependentPass']))
         : null,
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,

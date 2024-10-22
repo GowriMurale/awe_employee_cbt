@@ -56,6 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (res.isSignedIn) {
+        String empId = userIdController.text.trim(); // Use the value from userIdController
+        print(empId);
+        storeUserData(empId); // Store user ID locally
         print('Sign in successful for user: ${userIdController.text.trim()}');
         Get.off(() => DashBoardScreeen());
       } else {

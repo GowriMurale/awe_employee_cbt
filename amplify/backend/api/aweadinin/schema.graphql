@@ -1,3 +1,9 @@
+type Blng @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  weeklySheet: [String!]
+  status: String!
+}
+
 type WPTracking @model @auth(rules: [{ allow: public }]) {
   id: ID!
   tempID: String!
@@ -56,20 +62,20 @@ type TicketRequest @model @auth(rules: [{ allow: public }]) {
 
 type EducationDetails @model @auth(rules: [{ allow: public }]) {
   id: ID!
-  empID: String!
+  tempID: String!
   crime: String
   crimeDesc: String
   emgDetails: [String!]
   noExperience: String!
   empStatement: String!
-  desc  : String
+  desc: String
   disease: String
   diseaseDesc: String
   liquor: String
   liquorDesc: String
   noticePeriod: String!
   perIS: String!
-  perID: String
+  perIDesc: String
   referees: [String]
   relatives: [String]
   salaryExpectation: String
@@ -81,7 +87,7 @@ type EducationDetails @model @auth(rules: [{ allow: public }]) {
 
 type PersonalDetails @model @auth(rules: [{ allow: public }]) {
   id: ID!
-  empID: String!
+  tempID: String!
   age: Int!
   alternateNo: String
   agent: String
@@ -119,63 +125,100 @@ type PersonalDetails @model @auth(rules: [{ allow: public }]) {
   workExperience: [String]
 }
 
-type EmployeePersonalDoc @model @auth(rules: [{ allow: public }]) {
+type EmpPersonalInfo @model @auth(rules: [{ allow: public }]) {
   id: ID!
-  passportNo: String
-  passportIssued: String
-  passportExpiry: String
-  passportDestination: String
-  contactNo: String!
-  address: String!
-  employeeBadgeNumber: String!
-  sapNumber: String!
-  nationalCategory: String!
-  countryOfOrigin: String!
-  otherCountryOfOrigin: String
-  educationLevel: String!
-  academicTechnicalQualification: String!
-  nextOfKin: [String!]
-  inductionBriefing: String!
-  previousEmployment: String!
-  previousEmploymentPeriod: String!
   empID: String!
+  age: Int
+  aTQualify: String
+  alternateNo: String
+  agent: String
+  contactNo: String!
+  cob: String
+  ctryOfOrigin: String
+  chinese: String
+  dob: String!
+  educLevel: String
+  email: String!
+  eduDetails: [String]
+  empBadgeNo: String
+  empDocUpload: [String]
+  familyDetails: [String]
+  gender: String!
+  lang: String
+  marital: String!
+  name: String!
+  nationality: String!
+  nationalCat: String
+  otherNation: String
+  oCOfOrigin: String
+  otherRace: String
+  otherReligion: String
+  profilePhoto: String
+  permanentAddress: String!
+  race: String!
+  religion: String!
+  sapNo: String
 }
 
-type EmployeePersonalInfo @model @auth(rules: [{ allow: public }]) {
+type IDDetails @model @auth(rules: [{ allow: public }]) {
   id: ID!
   empID: String!
-  name: String!
-  gender: String!
-  dateOfBirth: String!
-  email: String!
-  nationality: String!
-  otherNationality: String
-  religion: String!
-  marital: String!
-  race: String!
-  bruneiIcNo: String
-  bruneiIcColour: String
-  bruneiIcExpiry: String
-  malaysianIcNumber: String
-  malaysianIcExpiry: String
-  EmployeePersonalDoc: EmployeePersonalDoc @hasOne
+  bwnIcNo: String
+  bwnIcColour: String
+  bwnIcExpiry: String
+  driveLic: String
+  inducBrief: String
+  inducBriefUp: String
+  myIcNo: String
+  ppNo: String
+  ppIssued: String
+  ppExpiry: String
+  ppDestinate: String
+  preEmp: String
+  preEmpPeriod: String
+  profilePhoto: String
+}
+
+type CandIToEMP @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  empID: String!
+  crime: String
+  crimeDesc: String
+  emgDetails: [String!]
+  noExperience: String!
+  empStatement: String!
+  desc: String
+  disease: String
+  diseaseDesc: String
+  liquor: String
+  liquorDesc: String
+  perIS: String!
+  perID: String
+  referees: [String]
+  relatives: [String]
+  salaryExpectation: String
+  supportInfo: String
+  workExperience: [String]
 }
 
 type LabourDependentPass @model @auth(rules: [{ allow: public }]) {
   id: ID!
+    empID: String!
+      airTicketStatus: String!
+  dependentName: String!
+  dependentPassportNumber: String!
+  dependentPassportExpiy: String!
+     labourDepositPaidBy: String!
+  labourDepositReceiptNumber: String!
+  labourDepositAmount: String!
   passportLocation: String!
   reEntryVisaApplication: String!
   immigrationApprovalDate: String!
   reEntryVisaExpiry: String!
-  airTicketStatus: String!
-  dependentName: String!
-  dependentPassportNumber: String!
-  dependentPassportExpiy: String!
+
   relation: String!
-  labourDepositPaidBy: String!
-  labourDepositReceiptNumber: String!
-  labourDepositAmount: String!
-  empID: String!
+ 
+
 }
 
 type LabourMedicalInfo @model @auth(rules: [{ allow: public }]) {

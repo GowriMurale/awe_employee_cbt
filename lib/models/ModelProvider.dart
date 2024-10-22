@@ -20,11 +20,13 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, override_on_non_overriding_member, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'package:amplify_core/amplify_core.dart' as amplify_core;
+import 'Blng.dart';
+import 'CandIToEMP.dart';
 import 'EducationDetails.dart';
+import 'EmpPersonalInfo.dart';
 import 'EmployeeNonLocalAcco.dart';
-import 'EmployeePersonalDoc.dart';
-import 'EmployeePersonalInfo.dart';
 import 'EmployeeWorkInfo.dart';
+import 'IDDetails.dart';
 import 'InterviewScheduleSchema.dart';
 import 'LabourDependentPass.dart';
 import 'LabourMedicalInfo.dart';
@@ -39,11 +41,13 @@ import 'TicketRequest.dart';
 import 'User.dart';
 import 'WPTracking.dart';
 
+export 'Blng.dart';
+export 'CandIToEMP.dart';
 export 'EducationDetails.dart';
+export 'EmpPersonalInfo.dart';
 export 'EmployeeNonLocalAcco.dart';
-export 'EmployeePersonalDoc.dart';
-export 'EmployeePersonalInfo.dart';
 export 'EmployeeWorkInfo.dart';
+export 'IDDetails.dart';
 export 'InterviewScheduleSchema.dart';
 export 'LabourDependentPass.dart';
 export 'LabourMedicalInfo.dart';
@@ -60,9 +64,9 @@ export 'WPTracking.dart';
 
 class ModelProvider implements amplify_core.ModelProviderInterface {
   @override
-  String version = "3a4bd7eec3ce2175d8057542070e4f4a";
+  String version = "9d3610ceb5fdafbd8e2ea586a9b2cde1";
   @override
-  List<amplify_core.ModelSchema> modelSchemas = [EducationDetails.schema, EmployeeNonLocalAcco.schema, EmployeePersonalDoc.schema, EmployeePersonalInfo.schema, EmployeeWorkInfo.schema, InterviewScheduleSchema.schema, LabourDependentPass.schema, LabourMedicalInfo.schema, LabourWorkPass.schema, LeaveStatus.schema, LeaveWorkInfo.schema, LocalMobilization.schema, PersonalDetails.schema, SampleTest1.schema, TerminationWorkInfo.schema, TicketRequest.schema, User.schema, WPTracking.schema];
+  List<amplify_core.ModelSchema> modelSchemas = [Blng.schema, CandIToEMP.schema, EducationDetails.schema, EmpPersonalInfo.schema, EmployeeNonLocalAcco.schema, EmployeeWorkInfo.schema, IDDetails.schema, InterviewScheduleSchema.schema, LabourDependentPass.schema, LabourMedicalInfo.schema, LabourWorkPass.schema, LeaveStatus.schema, LeaveWorkInfo.schema, LocalMobilization.schema, PersonalDetails.schema, SampleTest1.schema, TerminationWorkInfo.schema, TicketRequest.schema, User.schema, WPTracking.schema];
   @override
   List<amplify_core.ModelSchema> customTypeSchemas = [];
   static final ModelProvider _instance = ModelProvider();
@@ -71,16 +75,20 @@ class ModelProvider implements amplify_core.ModelProviderInterface {
   
   amplify_core.ModelType getModelTypeByModelName(String modelName) {
     switch(modelName) {
+      case "Blng":
+        return Blng.classType;
+      case "CandIToEMP":
+        return CandIToEMP.classType;
       case "EducationDetails":
         return EducationDetails.classType;
+      case "EmpPersonalInfo":
+        return EmpPersonalInfo.classType;
       case "EmployeeNonLocalAcco":
         return EmployeeNonLocalAcco.classType;
-      case "EmployeePersonalDoc":
-        return EmployeePersonalDoc.classType;
-      case "EmployeePersonalInfo":
-        return EmployeePersonalInfo.classType;
       case "EmployeeWorkInfo":
         return EmployeeWorkInfo.classType;
+      case "IDDetails":
+        return IDDetails.classType;
       case "InterviewScheduleSchema":
         return InterviewScheduleSchema.classType;
       case "LabourDependentPass":

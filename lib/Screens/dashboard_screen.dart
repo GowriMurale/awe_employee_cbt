@@ -989,7 +989,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                            onPressed: () async {
                                              // Dismiss the confirmation dialog
                                              Navigator.of(context).pop();
-
                                              // Call your apply function here with the provided input
                                              await applyTicketRequest(departure.text, arrival.text, destination.text, remarks.text);
 
@@ -1005,12 +1004,11 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                                  destination.clear();
                                                  remarks.clear();
 
-                                                 // Close the success dialog
-                                                 Get.back(); // Close the success dialog
-
-                                                 // Optionally pop the previous screen
-                                                 Navigator.of(context).pop();
+                                                  Get.back();
+                                                 Get.off(DashBoardScreeen());
+                                               // Close the success dialog
                                                },
+
                                              );
                                            },
                                            child: Text('Yes', style: TextStyle(color: Colors.green)),
@@ -1930,6 +1928,59 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   }
 
 
+  Future<void> updateTicketStatusById(String ticketId) async {
+    try {
+      // First, fetch the ticket request using its ID
+      final getRequest = ModelQueries.get(TicketRequest.classType, ticketId as ModelIdentifier<TicketRequest>);
+      final getResponse = await Amplify.API.query(request: getRequest).response;
+
+      // Check for errors or if no data was returned
+      if (getResponse.data == null || getResponse.errors.isNotEmpty) {
+        print('Failed to fetch ticket: ${getResponse.errors}');
+        Get.defaultDialog(
+          title: 'Error',
+          content: Text('Ticket not found.'),
+          confirmTextColor: Colors.white,
+          onConfirm: () => Get.back(),
+        );
+        return;
+      }
+
+      // If ticket found, update its status
+      TicketRequest originalTicket = getResponse.data!;
+      final updatedTicket = originalTicket.copyWith(
+        hrStatus: "Cancelled",
+        // hrDate: TemporalDateTime.now(), // Optionally update hrDate
+      );
+
+      // Send the mutation request to update the ticket
+      final updateRequest = ModelMutations.update(updatedTicket);
+      final updateResponse = await Amplify.API.mutate(request: updateRequest).response;
+
+      if (updateResponse.errors.isNotEmpty) {
+        print('Failed to update the ticket: ${updateResponse.errors}');
+        Get.defaultDialog(
+          title: 'Error',
+          content: Text('Failed to update the ticket status.'),
+          confirmTextColor: Colors.white,
+          onConfirm: () => Get.back(),
+        );
+        return;
+      }
+
+      print('Ticket status updated to Cancelled');
+      await fetchTicketRequests(); // Refresh the ticket list after update
+
+    } catch (e) {
+      print( e);
+      Get.defaultDialog(
+        title: 'Error',
+        content: Text('An error occurred while updating the ticket.'),
+        confirmTextColor: Colors.white,
+        onConfirm: () => Get.back(),
+      );
+    }
+  }
 
 
   /// Show an AlertDialog using GetX
@@ -2073,6 +2124,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         minWidth: size.width * 0.062,
                         height: size.height * 0.052,
                         onPressed: () {
+                          updateTicketStatusById(request.id);
                         },
                         child: Text(
                           'Cancel',

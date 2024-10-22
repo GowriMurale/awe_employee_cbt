@@ -24,11 +24,11 @@ import 'package:amplify_core/amplify_core.dart' as amplify_core;
 import 'package:collection/collection.dart';
 
 
-/** This is an auto generated class representing the EducationDetails type in your schema. */
-class EducationDetails extends amplify_core.Model {
-  static const classType = const _EducationDetailsModelType();
+/** This is an auto generated class representing the CandIToEMP type in your schema. */
+class CandIToEMP extends amplify_core.Model {
+  static const classType = const _CandIToEMPModelType();
   final String id;
-  final String? _tempID;
+  final String? _empID;
   final String? _crime;
   final String? _crimeDesc;
   final List<String>? _emgDetails;
@@ -39,16 +39,13 @@ class EducationDetails extends amplify_core.Model {
   final String? _diseaseDesc;
   final String? _liquor;
   final String? _liquorDesc;
-  final String? _noticePeriod;
   final String? _perIS;
-  final String? _perIDesc;
+  final String? _perID;
   final List<String>? _referees;
   final List<String>? _relatives;
   final String? _salaryExpectation;
   final String? _supportInfo;
-  final String? _uploadResume;
-  final String? _uploadCertificate;
-  final String? _uploadPp;
+  final List<String>? _workExperience;
   final amplify_core.TemporalDateTime? _createdAt;
   final amplify_core.TemporalDateTime? _updatedAt;
 
@@ -59,15 +56,15 @@ class EducationDetails extends amplify_core.Model {
   @override
   String getId() => id;
   
-  EducationDetailsModelIdentifier get modelIdentifier {
-      return EducationDetailsModelIdentifier(
+  CandIToEMPModelIdentifier get modelIdentifier {
+      return CandIToEMPModelIdentifier(
         id: id
       );
   }
   
-  String get tempID {
+  String get empID {
     try {
-      return _tempID!;
+      return _empID!;
     } catch(e) {
       throw amplify_core.AmplifyCodeGenModelException(
           amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -136,19 +133,6 @@ class EducationDetails extends amplify_core.Model {
     return _liquorDesc;
   }
   
-  String get noticePeriod {
-    try {
-      return _noticePeriod!;
-    } catch(e) {
-      throw amplify_core.AmplifyCodeGenModelException(
-          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
   String get perIS {
     try {
       return _perIS!;
@@ -162,8 +146,8 @@ class EducationDetails extends amplify_core.Model {
     }
   }
   
-  String? get perIDesc {
-    return _perIDesc;
+  String? get perID {
+    return _perID;
   }
   
   List<String>? get referees {
@@ -182,43 +166,8 @@ class EducationDetails extends amplify_core.Model {
     return _supportInfo;
   }
   
-  String get uploadResume {
-    try {
-      return _uploadResume!;
-    } catch(e) {
-      throw amplify_core.AmplifyCodeGenModelException(
-          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
-  String get uploadCertificate {
-    try {
-      return _uploadCertificate!;
-    } catch(e) {
-      throw amplify_core.AmplifyCodeGenModelException(
-          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
-  String get uploadPp {
-    try {
-      return _uploadPp!;
-    } catch(e) {
-      throw amplify_core.AmplifyCodeGenModelException(
-          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  List<String>? get workExperience {
+    return _workExperience;
   }
   
   amplify_core.TemporalDateTime? get createdAt {
@@ -229,12 +178,12 @@ class EducationDetails extends amplify_core.Model {
     return _updatedAt;
   }
   
-  const EducationDetails._internal({required this.id, required tempID, crime, crimeDesc, emgDetails, required noExperience, required empStatement, desc, disease, diseaseDesc, liquor, liquorDesc, required noticePeriod, required perIS, perIDesc, referees, relatives, salaryExpectation, supportInfo, required uploadResume, required uploadCertificate, required uploadPp, createdAt, updatedAt}): _tempID = tempID, _crime = crime, _crimeDesc = crimeDesc, _emgDetails = emgDetails, _noExperience = noExperience, _empStatement = empStatement, _desc = desc, _disease = disease, _diseaseDesc = diseaseDesc, _liquor = liquor, _liquorDesc = liquorDesc, _noticePeriod = noticePeriod, _perIS = perIS, _perIDesc = perIDesc, _referees = referees, _relatives = relatives, _salaryExpectation = salaryExpectation, _supportInfo = supportInfo, _uploadResume = uploadResume, _uploadCertificate = uploadCertificate, _uploadPp = uploadPp, _createdAt = createdAt, _updatedAt = updatedAt;
+  const CandIToEMP._internal({required this.id, required empID, crime, crimeDesc, emgDetails, required noExperience, required empStatement, desc, disease, diseaseDesc, liquor, liquorDesc, required perIS, perID, referees, relatives, salaryExpectation, supportInfo, workExperience, createdAt, updatedAt}): _empID = empID, _crime = crime, _crimeDesc = crimeDesc, _emgDetails = emgDetails, _noExperience = noExperience, _empStatement = empStatement, _desc = desc, _disease = disease, _diseaseDesc = diseaseDesc, _liquor = liquor, _liquorDesc = liquorDesc, _perIS = perIS, _perID = perID, _referees = referees, _relatives = relatives, _salaryExpectation = salaryExpectation, _supportInfo = supportInfo, _workExperience = workExperience, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory EducationDetails({String? id, required String tempID, String? crime, String? crimeDesc, List<String>? emgDetails, required String noExperience, required String empStatement, String? desc, String? disease, String? diseaseDesc, String? liquor, String? liquorDesc, required String noticePeriod, required String perIS, String? perIDesc, List<String>? referees, List<String>? relatives, String? salaryExpectation, String? supportInfo, required String uploadResume, required String uploadCertificate, required String uploadPp}) {
-    return EducationDetails._internal(
+  factory CandIToEMP({String? id, required String empID, String? crime, String? crimeDesc, List<String>? emgDetails, required String noExperience, required String empStatement, String? desc, String? disease, String? diseaseDesc, String? liquor, String? liquorDesc, required String perIS, String? perID, List<String>? referees, List<String>? relatives, String? salaryExpectation, String? supportInfo, List<String>? workExperience}) {
+    return CandIToEMP._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
-      tempID: tempID,
+      empID: empID,
       crime: crime,
       crimeDesc: crimeDesc,
       emgDetails: emgDetails != null ? List<String>.unmodifiable(emgDetails) : emgDetails,
@@ -245,16 +194,13 @@ class EducationDetails extends amplify_core.Model {
       diseaseDesc: diseaseDesc,
       liquor: liquor,
       liquorDesc: liquorDesc,
-      noticePeriod: noticePeriod,
       perIS: perIS,
-      perIDesc: perIDesc,
+      perID: perID,
       referees: referees != null ? List<String>.unmodifiable(referees) : referees,
       relatives: relatives != null ? List<String>.unmodifiable(relatives) : relatives,
       salaryExpectation: salaryExpectation,
       supportInfo: supportInfo,
-      uploadResume: uploadResume,
-      uploadCertificate: uploadCertificate,
-      uploadPp: uploadPp);
+      workExperience: workExperience != null ? List<String>.unmodifiable(workExperience) : workExperience);
   }
   
   bool equals(Object other) {
@@ -264,9 +210,9 @@ class EducationDetails extends amplify_core.Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is EducationDetails &&
+    return other is CandIToEMP &&
       id == other.id &&
-      _tempID == other._tempID &&
+      _empID == other._empID &&
       _crime == other._crime &&
       _crimeDesc == other._crimeDesc &&
       DeepCollectionEquality().equals(_emgDetails, other._emgDetails) &&
@@ -277,16 +223,13 @@ class EducationDetails extends amplify_core.Model {
       _diseaseDesc == other._diseaseDesc &&
       _liquor == other._liquor &&
       _liquorDesc == other._liquorDesc &&
-      _noticePeriod == other._noticePeriod &&
       _perIS == other._perIS &&
-      _perIDesc == other._perIDesc &&
+      _perID == other._perID &&
       DeepCollectionEquality().equals(_referees, other._referees) &&
       DeepCollectionEquality().equals(_relatives, other._relatives) &&
       _salaryExpectation == other._salaryExpectation &&
       _supportInfo == other._supportInfo &&
-      _uploadResume == other._uploadResume &&
-      _uploadCertificate == other._uploadCertificate &&
-      _uploadPp == other._uploadPp;
+      DeepCollectionEquality().equals(_workExperience, other._workExperience);
   }
   
   @override
@@ -296,9 +239,9 @@ class EducationDetails extends amplify_core.Model {
   String toString() {
     var buffer = new StringBuffer();
     
-    buffer.write("EducationDetails {");
+    buffer.write("CandIToEMP {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("tempID=" + "$_tempID" + ", ");
+    buffer.write("empID=" + "$_empID" + ", ");
     buffer.write("crime=" + "$_crime" + ", ");
     buffer.write("crimeDesc=" + "$_crimeDesc" + ", ");
     buffer.write("emgDetails=" + (_emgDetails != null ? _emgDetails!.toString() : "null") + ", ");
@@ -309,16 +252,13 @@ class EducationDetails extends amplify_core.Model {
     buffer.write("diseaseDesc=" + "$_diseaseDesc" + ", ");
     buffer.write("liquor=" + "$_liquor" + ", ");
     buffer.write("liquorDesc=" + "$_liquorDesc" + ", ");
-    buffer.write("noticePeriod=" + "$_noticePeriod" + ", ");
     buffer.write("perIS=" + "$_perIS" + ", ");
-    buffer.write("perIDesc=" + "$_perIDesc" + ", ");
+    buffer.write("perID=" + "$_perID" + ", ");
     buffer.write("referees=" + (_referees != null ? _referees!.toString() : "null") + ", ");
     buffer.write("relatives=" + (_relatives != null ? _relatives!.toString() : "null") + ", ");
     buffer.write("salaryExpectation=" + "$_salaryExpectation" + ", ");
     buffer.write("supportInfo=" + "$_supportInfo" + ", ");
-    buffer.write("uploadResume=" + "$_uploadResume" + ", ");
-    buffer.write("uploadCertificate=" + "$_uploadCertificate" + ", ");
-    buffer.write("uploadPp=" + "$_uploadPp" + ", ");
+    buffer.write("workExperience=" + (_workExperience != null ? _workExperience!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -326,10 +266,10 @@ class EducationDetails extends amplify_core.Model {
     return buffer.toString();
   }
   
-  EducationDetails copyWith({String? tempID, String? crime, String? crimeDesc, List<String>? emgDetails, String? noExperience, String? empStatement, String? desc, String? disease, String? diseaseDesc, String? liquor, String? liquorDesc, String? noticePeriod, String? perIS, String? perIDesc, List<String>? referees, List<String>? relatives, String? salaryExpectation, String? supportInfo, String? uploadResume, String? uploadCertificate, String? uploadPp}) {
-    return EducationDetails._internal(
+  CandIToEMP copyWith({String? empID, String? crime, String? crimeDesc, List<String>? emgDetails, String? noExperience, String? empStatement, String? desc, String? disease, String? diseaseDesc, String? liquor, String? liquorDesc, String? perIS, String? perID, List<String>? referees, List<String>? relatives, String? salaryExpectation, String? supportInfo, List<String>? workExperience}) {
+    return CandIToEMP._internal(
       id: id,
-      tempID: tempID ?? this.tempID,
+      empID: empID ?? this.empID,
       crime: crime ?? this.crime,
       crimeDesc: crimeDesc ?? this.crimeDesc,
       emgDetails: emgDetails ?? this.emgDetails,
@@ -340,20 +280,17 @@ class EducationDetails extends amplify_core.Model {
       diseaseDesc: diseaseDesc ?? this.diseaseDesc,
       liquor: liquor ?? this.liquor,
       liquorDesc: liquorDesc ?? this.liquorDesc,
-      noticePeriod: noticePeriod ?? this.noticePeriod,
       perIS: perIS ?? this.perIS,
-      perIDesc: perIDesc ?? this.perIDesc,
+      perID: perID ?? this.perID,
       referees: referees ?? this.referees,
       relatives: relatives ?? this.relatives,
       salaryExpectation: salaryExpectation ?? this.salaryExpectation,
       supportInfo: supportInfo ?? this.supportInfo,
-      uploadResume: uploadResume ?? this.uploadResume,
-      uploadCertificate: uploadCertificate ?? this.uploadCertificate,
-      uploadPp: uploadPp ?? this.uploadPp);
+      workExperience: workExperience ?? this.workExperience);
   }
   
-  EducationDetails copyWithModelFieldValues({
-    ModelFieldValue<String>? tempID,
+  CandIToEMP copyWithModelFieldValues({
+    ModelFieldValue<String>? empID,
     ModelFieldValue<String?>? crime,
     ModelFieldValue<String?>? crimeDesc,
     ModelFieldValue<List<String>>? emgDetails,
@@ -364,20 +301,17 @@ class EducationDetails extends amplify_core.Model {
     ModelFieldValue<String?>? diseaseDesc,
     ModelFieldValue<String?>? liquor,
     ModelFieldValue<String?>? liquorDesc,
-    ModelFieldValue<String>? noticePeriod,
     ModelFieldValue<String>? perIS,
-    ModelFieldValue<String?>? perIDesc,
+    ModelFieldValue<String?>? perID,
     ModelFieldValue<List<String>?>? referees,
     ModelFieldValue<List<String>?>? relatives,
     ModelFieldValue<String?>? salaryExpectation,
     ModelFieldValue<String?>? supportInfo,
-    ModelFieldValue<String>? uploadResume,
-    ModelFieldValue<String>? uploadCertificate,
-    ModelFieldValue<String>? uploadPp
+    ModelFieldValue<List<String>?>? workExperience
   }) {
-    return EducationDetails._internal(
+    return CandIToEMP._internal(
       id: id,
-      tempID: tempID == null ? this.tempID : tempID.value,
+      empID: empID == null ? this.empID : empID.value,
       crime: crime == null ? this.crime : crime.value,
       crimeDesc: crimeDesc == null ? this.crimeDesc : crimeDesc.value,
       emgDetails: emgDetails == null ? this.emgDetails : emgDetails.value,
@@ -388,22 +322,19 @@ class EducationDetails extends amplify_core.Model {
       diseaseDesc: diseaseDesc == null ? this.diseaseDesc : diseaseDesc.value,
       liquor: liquor == null ? this.liquor : liquor.value,
       liquorDesc: liquorDesc == null ? this.liquorDesc : liquorDesc.value,
-      noticePeriod: noticePeriod == null ? this.noticePeriod : noticePeriod.value,
       perIS: perIS == null ? this.perIS : perIS.value,
-      perIDesc: perIDesc == null ? this.perIDesc : perIDesc.value,
+      perID: perID == null ? this.perID : perID.value,
       referees: referees == null ? this.referees : referees.value,
       relatives: relatives == null ? this.relatives : relatives.value,
       salaryExpectation: salaryExpectation == null ? this.salaryExpectation : salaryExpectation.value,
       supportInfo: supportInfo == null ? this.supportInfo : supportInfo.value,
-      uploadResume: uploadResume == null ? this.uploadResume : uploadResume.value,
-      uploadCertificate: uploadCertificate == null ? this.uploadCertificate : uploadCertificate.value,
-      uploadPp: uploadPp == null ? this.uploadPp : uploadPp.value
+      workExperience: workExperience == null ? this.workExperience : workExperience.value
     );
   }
   
-  EducationDetails.fromJson(Map<String, dynamic> json)  
+  CandIToEMP.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
-      _tempID = json['tempID'],
+      _empID = json['empID'],
       _crime = json['crime'],
       _crimeDesc = json['crimeDesc'],
       _emgDetails = json['emgDetails']?.cast<String>(),
@@ -414,26 +345,23 @@ class EducationDetails extends amplify_core.Model {
       _diseaseDesc = json['diseaseDesc'],
       _liquor = json['liquor'],
       _liquorDesc = json['liquorDesc'],
-      _noticePeriod = json['noticePeriod'],
       _perIS = json['perIS'],
-      _perIDesc = json['perIDesc'],
+      _perID = json['perID'],
       _referees = json['referees']?.cast<String>(),
       _relatives = json['relatives']?.cast<String>(),
       _salaryExpectation = json['salaryExpectation'],
       _supportInfo = json['supportInfo'],
-      _uploadResume = json['uploadResume'],
-      _uploadCertificate = json['uploadCertificate'],
-      _uploadPp = json['uploadPp'],
+      _workExperience = json['workExperience']?.cast<String>(),
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'tempID': _tempID, 'crime': _crime, 'crimeDesc': _crimeDesc, 'emgDetails': _emgDetails, 'noExperience': _noExperience, 'empStatement': _empStatement, 'desc': _desc, 'disease': _disease, 'diseaseDesc': _diseaseDesc, 'liquor': _liquor, 'liquorDesc': _liquorDesc, 'noticePeriod': _noticePeriod, 'perIS': _perIS, 'perIDesc': _perIDesc, 'referees': _referees, 'relatives': _relatives, 'salaryExpectation': _salaryExpectation, 'supportInfo': _supportInfo, 'uploadResume': _uploadResume, 'uploadCertificate': _uploadCertificate, 'uploadPp': _uploadPp, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'empID': _empID, 'crime': _crime, 'crimeDesc': _crimeDesc, 'emgDetails': _emgDetails, 'noExperience': _noExperience, 'empStatement': _empStatement, 'desc': _desc, 'disease': _disease, 'diseaseDesc': _diseaseDesc, 'liquor': _liquor, 'liquorDesc': _liquorDesc, 'perIS': _perIS, 'perID': _perID, 'referees': _referees, 'relatives': _relatives, 'salaryExpectation': _salaryExpectation, 'supportInfo': _supportInfo, 'workExperience': _workExperience, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
     'id': id,
-    'tempID': _tempID,
+    'empID': _empID,
     'crime': _crime,
     'crimeDesc': _crimeDesc,
     'emgDetails': _emgDetails,
@@ -444,23 +372,20 @@ class EducationDetails extends amplify_core.Model {
     'diseaseDesc': _diseaseDesc,
     'liquor': _liquor,
     'liquorDesc': _liquorDesc,
-    'noticePeriod': _noticePeriod,
     'perIS': _perIS,
-    'perIDesc': _perIDesc,
+    'perID': _perID,
     'referees': _referees,
     'relatives': _relatives,
     'salaryExpectation': _salaryExpectation,
     'supportInfo': _supportInfo,
-    'uploadResume': _uploadResume,
-    'uploadCertificate': _uploadCertificate,
-    'uploadPp': _uploadPp,
+    'workExperience': _workExperience,
     'createdAt': _createdAt,
     'updatedAt': _updatedAt
   };
 
-  static final amplify_core.QueryModelIdentifier<EducationDetailsModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<EducationDetailsModelIdentifier>();
+  static final amplify_core.QueryModelIdentifier<CandIToEMPModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<CandIToEMPModelIdentifier>();
   static final ID = amplify_core.QueryField(fieldName: "id");
-  static final TEMPID = amplify_core.QueryField(fieldName: "tempID");
+  static final EMPID = amplify_core.QueryField(fieldName: "empID");
   static final CRIME = amplify_core.QueryField(fieldName: "crime");
   static final CRIMEDESC = amplify_core.QueryField(fieldName: "crimeDesc");
   static final EMGDETAILS = amplify_core.QueryField(fieldName: "emgDetails");
@@ -471,19 +396,16 @@ class EducationDetails extends amplify_core.Model {
   static final DISEASEDESC = amplify_core.QueryField(fieldName: "diseaseDesc");
   static final LIQUOR = amplify_core.QueryField(fieldName: "liquor");
   static final LIQUORDESC = amplify_core.QueryField(fieldName: "liquorDesc");
-  static final NOTICEPERIOD = amplify_core.QueryField(fieldName: "noticePeriod");
   static final PERIS = amplify_core.QueryField(fieldName: "perIS");
-  static final PERIDESC = amplify_core.QueryField(fieldName: "perIDesc");
+  static final PERID = amplify_core.QueryField(fieldName: "perID");
   static final REFEREES = amplify_core.QueryField(fieldName: "referees");
   static final RELATIVES = amplify_core.QueryField(fieldName: "relatives");
   static final SALARYEXPECTATION = amplify_core.QueryField(fieldName: "salaryExpectation");
   static final SUPPORTINFO = amplify_core.QueryField(fieldName: "supportInfo");
-  static final UPLOADRESUME = amplify_core.QueryField(fieldName: "uploadResume");
-  static final UPLOADCERTIFICATE = amplify_core.QueryField(fieldName: "uploadCertificate");
-  static final UPLOADPP = amplify_core.QueryField(fieldName: "uploadPp");
+  static final WORKEXPERIENCE = amplify_core.QueryField(fieldName: "workExperience");
   static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "EducationDetails";
-    modelSchemaDefinition.pluralName = "EducationDetails";
+    modelSchemaDefinition.name = "CandIToEMP";
+    modelSchemaDefinition.pluralName = "CandIToEMPS";
     
     modelSchemaDefinition.authRules = [
       amplify_core.AuthRule(
@@ -499,132 +421,115 @@ class EducationDetails extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.TEMPID,
+      key: CandIToEMP.EMPID,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.CRIME,
+      key: CandIToEMP.CRIME,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.CRIMEDESC,
+      key: CandIToEMP.CRIMEDESC,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.EMGDETAILS,
+      key: CandIToEMP.EMGDETAILS,
       isRequired: false,
       isArray: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.collection, ofModelName: amplify_core.ModelFieldTypeEnum.string.name)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.NOEXPERIENCE,
+      key: CandIToEMP.NOEXPERIENCE,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.EMPSTATEMENT,
+      key: CandIToEMP.EMPSTATEMENT,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.DESC,
+      key: CandIToEMP.DESC,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.DISEASE,
+      key: CandIToEMP.DISEASE,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.DISEASEDESC,
+      key: CandIToEMP.DISEASEDESC,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.LIQUOR,
+      key: CandIToEMP.LIQUOR,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.LIQUORDESC,
+      key: CandIToEMP.LIQUORDESC,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.NOTICEPERIOD,
+      key: CandIToEMP.PERIS,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.PERIS,
-      isRequired: true,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.PERIDESC,
+      key: CandIToEMP.PERID,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.REFEREES,
+      key: CandIToEMP.REFEREES,
       isRequired: false,
       isArray: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.collection, ofModelName: amplify_core.ModelFieldTypeEnum.string.name)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.RELATIVES,
+      key: CandIToEMP.RELATIVES,
       isRequired: false,
       isArray: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.collection, ofModelName: amplify_core.ModelFieldTypeEnum.string.name)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.SALARYEXPECTATION,
+      key: CandIToEMP.SALARYEXPECTATION,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.SUPPORTINFO,
+      key: CandIToEMP.SUPPORTINFO,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.UPLOADRESUME,
-      isRequired: true,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.UPLOADCERTIFICATE,
-      isRequired: true,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: EducationDetails.UPLOADPP,
-      isRequired: true,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+      key: CandIToEMP.WORKEXPERIENCE,
+      isRequired: false,
+      isArray: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.collection, ofModelName: amplify_core.ModelFieldTypeEnum.string.name)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
@@ -643,29 +548,29 @@ class EducationDetails extends amplify_core.Model {
   });
 }
 
-class _EducationDetailsModelType extends amplify_core.ModelType<EducationDetails> {
-  const _EducationDetailsModelType();
+class _CandIToEMPModelType extends amplify_core.ModelType<CandIToEMP> {
+  const _CandIToEMPModelType();
   
   @override
-  EducationDetails fromJson(Map<String, dynamic> jsonData) {
-    return EducationDetails.fromJson(jsonData);
+  CandIToEMP fromJson(Map<String, dynamic> jsonData) {
+    return CandIToEMP.fromJson(jsonData);
   }
   
   @override
   String modelName() {
-    return 'EducationDetails';
+    return 'CandIToEMP';
   }
 }
 
 /**
  * This is an auto generated class representing the model identifier
- * of [EducationDetails] in your schema.
+ * of [CandIToEMP] in your schema.
  */
-class EducationDetailsModelIdentifier implements amplify_core.ModelIdentifier<EducationDetails> {
+class CandIToEMPModelIdentifier implements amplify_core.ModelIdentifier<CandIToEMP> {
   final String id;
 
-  /** Create an instance of EducationDetailsModelIdentifier using [id] the primary key. */
-  const EducationDetailsModelIdentifier({
+  /** Create an instance of CandIToEMPModelIdentifier using [id] the primary key. */
+  const CandIToEMPModelIdentifier({
     required this.id});
   
   @override
@@ -683,7 +588,7 @@ class EducationDetailsModelIdentifier implements amplify_core.ModelIdentifier<Ed
   String serializeAsString() => serializeAsMap().values.join('#');
   
   @override
-  String toString() => 'EducationDetailsModelIdentifier(id: $id)';
+  String toString() => 'CandIToEMPModelIdentifier(id: $id)';
   
   @override
   bool operator ==(Object other) {
@@ -691,7 +596,7 @@ class EducationDetailsModelIdentifier implements amplify_core.ModelIdentifier<Ed
       return true;
     }
     
-    return other is EducationDetailsModelIdentifier &&
+    return other is CandIToEMPModelIdentifier &&
       id == other.id;
   }
   
