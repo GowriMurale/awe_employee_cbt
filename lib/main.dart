@@ -1,23 +1,14 @@
-
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
-import 'package:awe_project/Screens/apply_leave_screen.dart';
-import 'package:awe_project/Screens/dashboard_screen.dart';
 import 'package:awe_project/Screens/login_screen.dart';
-import 'package:awe_project/Screens/change_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'Screens/signup_dummy.dart';
 
 import 'amplifyconfiguration.dart';
-import 'globals/navigation_bar.dart';
 import 'models/ModelProvider.dart';
-
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,7 +49,7 @@ Future<bool> _checkUserSession() async {
     return session.isSignedIn;
   } catch (e) {
     print('Error fetching session: $e');
-    return false;  // Fallback to not signed in
+    return false; // Fallback to not signed in
   }
 }
 
@@ -73,13 +64,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       // Navigate to either Dashboard or Login depending on session state
-      home: isLoggedIn ? DashBoardScreeen() : LoginScreen(),
+      home: LoginScreen(),
     );
   }
 }
-
-
-
 
 // enum LeaveStatus {
 //   PENDING
